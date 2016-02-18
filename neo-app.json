@@ -1,5 +1,5 @@
 {
-	"welcomeFile": "LocalViz.html",
+	"welcomeFile": "register/index.html",
 	"routes": [{
 			"path": "/resources",
 			"target": {
@@ -28,7 +28,7 @@
 		},
 
 		{
-			"path": "/csrodata/",
+			"path": "/odata/csrodata/",
 			"target": {
 				"type": "destination",
 				"name": "csrodata",
