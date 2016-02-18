@@ -31,7 +31,8 @@
 			"path": "/csrodata/",
 			"target": {
 				"type": "destination",
-				"name": "csrodata"
+				"name": "csrodata",
+				"entryPath": "/ODataSrv"
 			},
 			"description": "csrodata Srv"
 		},
