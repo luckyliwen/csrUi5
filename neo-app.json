@@ -1,4 +1,5 @@
 {
+	"authenticationMethod": "saml",
 	"welcomeFile": "register/index.html",
 	"routes": [{
 			"path": "/resources",
@@ -30,7 +31,7 @@
 		{
 			"path": "/odata/csrodata/",
 			"target": {
-				"type": "destination",
+				"type": "application",
 				"name": "csrodata",
 				"entryPath": "/ODataSrv"
 			},
