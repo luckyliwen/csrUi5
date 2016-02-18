@@ -1,11 +1,13 @@
 {
 	
 	"welcomeFile": "register/index.html",
+	"sendWelcomeFileRedirect": true,
 	"routes": [{
 			"path": "/resources",
 			"target": {
 				"type": "service",
 				"name": "sapui5",
+				"version": "1.32.11",
 				"entryPath": "/resources"
 			},
 			"description": "SAPUI5 Resources"
@@ -14,6 +16,7 @@
 			"target": {
 				"type": "service",
 				"name": "sapui5",
+				"version": "1.32.11",
 				"entryPath": "/test-resources"
 			},
 			"description": "SAPUI5 Test Resources"
@@ -54,5 +57,14 @@
 	}, {
 		"directive": "public",
 		"maxAge": 31536000
-	}]
+	}],
+	"securityConstraints": [
+        {
+            "permission": "accessUserData",
+            "description": "Access User Data",
+            "protectedPaths": [
+                "/"
+            ]
+        }
+    ]
 }
