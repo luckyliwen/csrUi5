@@ -34,7 +34,7 @@
 				"name": "csrodata"
 			},
 			"description": "csrodata Srv"
-		}
+		},
 
 		{
 			"path": "/attachmentUploader",
