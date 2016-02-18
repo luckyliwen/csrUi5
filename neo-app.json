@@ -1,0 +1,55 @@
+{
+  "welcomeFile": "LocalViz.html",
+  "routes": [
+    {
+      "path": "/resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/resources"
+      },
+      "description": "SAPUI5 Resources"
+    },
+    {
+      "path": "/test-resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/test-resources"
+      },
+      "description": "SAPUI5 Test Resources"
+    },
+
+    {
+      "path": "/odata/CustomerPaymentPortal/",
+      "target": {
+        "type": "destination",
+        "name": "SAPCustomerPaymentPortalCoreDestination",
+        "entryPath": "/ODataSrv"
+      },
+      "description": "BD Olingo Srv"
+    },
+
+    {
+      "path": "/sap/ui5/1/resources//odata/CustomerPayment/",
+      "target": {
+        "type": "destination",
+        "name": "SAPCustomerPaymentPortalCoreDestination",
+        "entryPath": "/ODataSrv",
+        "preferLocal":true
+      },
+     "description": "BD Olingo Srv"
+    },
+  ],
+  "cacheControl": [
+    {
+      "directive": "private",
+      "maxAge": 0,
+      "path": "*html"
+    },
+    {
+      "directive": "public",
+      "maxAge": 31536000
+    }
+  ]
+}
