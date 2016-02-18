@@ -28,7 +28,7 @@
 		},
 
 		{
-			"path": "/csrodata",
+			"path": "/csrodata/",
 			"target": {
 				"type": "destination",
 				"name": "csrodata"
@@ -37,7 +37,7 @@
 		},
 
 		{
-			"path": "/attachmentUploader",
+			"path": "/attachmentUploader/",
 			"target": {
 				"type": "destination",
 				"name": "attachmentUploader"
