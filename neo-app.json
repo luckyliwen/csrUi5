@@ -29,9 +29,9 @@
 		},
 
 		{
-			"path": "/odata/csrodata/",
+			"path": "/odata/CsrODataSrv",
 			"target": {
-				"type": "application",
+				"type": "destination",
 				"name": "csrodata",
 				"entryPath": "/ODataSrv"
 			},
@@ -39,7 +39,7 @@
 		},
 
 		{
-			"path": "/attachmentUploader/",
+			"path": "/attachmentUploader",
 			"target": {
 				"type": "destination",
 				"name": "attachmentUploader"
