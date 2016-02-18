@@ -1,0 +1,128 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:html="http:www.w3.org1999xhtml"
+    xmlns:table="sap.ui.table"
+    xmlns:commons="sap.ui.commons"
+    xmlns:core="sap.ui.core"
+    xmlns:mylib="csr.lib"
+    xmlns:l="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form">
+
+    <Page title="{UserId}   Registration Detail Information" id="detailPage">
+    
+    <form:SimpleForm id="detailForm" editable="true"  layout="ResponsiveGridLayout"
+			labelSpanXL="5" labelSpanL="5"  labelSpanM="5"  
+			emptySpanM="0" emptySpanL="0"  emptySpanXL="0" 
+			columnsM="2" columnsL="2" columnsXL="2" >
+			<form:content>
+			<core:Title text="Basic" />
+				<!-- <Label text="SAP ID"  required="true" />
+				<Input value="{UserId}" editable="false" editable="false" />  -->
+
+				<Label text="Last Name"  required="true" />
+				<Input value="{LastName}"  editable="false" change="onInputChanged" />
+				
+				<Label text="First Name"  required="true" />
+				<Input value="{FirstName}"   editable="false" change="onInputChanged" />
+
+				<Label text="Gender" id="GenderLabel" required="true" />
+				<Input value="{Gender}"  editable="false"  id="Gender" />
+
+				<Label text="Email Address" id="EmailLabel" required="true" />
+				<Input value="{Email}" editable="false"  id="Email" />
+
+				<Label text="Title" id="TitleLabel" required="true" />
+				<Input value="{Title}" id="Title"  editable="false"/>
+
+				<Label text="Birthday" id="BirthdayLabel" required="true" />
+				<Input value="{path: '/Birthday', formatter: '.fmtBirthday'}"  editable="false" id="Birthday" />
+
+			<core:Title text="Detail" />
+				
+				<Label text="Phone"  required="true" />
+				<Input value="{Phone}" id="Phone"  editable="false" change="onInputChanged" />
+
+				<Label text="Distance" id="DistanceLabel" required="true" />
+				<mylib:SelectExt name="Distance"  id="Distance" 
+					selectedKey="{Distance}" enabled="false" />
+
+				<Label text="TshirtSize" id="TshirtSizeLabel" required="true" />
+				<mylib:SelectExt name="TshirtSize"  selectedKey="{TshirtSize}" id="TshirtSize" enabled="false" />
+
+				<Label text="Nationality" id="NationalityLabel" required="true" />
+				<mylib:SelectExt name="Nationality"  selectedKey="{Nationality}" id="Nationality" enabled="false"  />
+												
+				<Label text="Team" id="TeamLabel" required="true" />
+				<mylib:SelectExt name="Team" selectedKey="{Team}"  id="Team" enabled="false" />
+
+				<Label text="Club" id="ClubLabel" required="true" />
+				<mylib:SelectExt name="Club" selectedKey="{Club}" id="Club" enabled="false" />
+			</form:content>
+		</form:SimpleForm>
+<Panel headerText="Attachments" id="attachmentPanel">
+<l:Grid defaultSpan="L6 M6 S6">
+<VBox>
+	<!-- text='{parts:[{path:"Id/FileName"}, {path:"Id/Type"}], formatter: ".fmtAttachmentLink" }' 
+	, formatter: ".fmtAttachmentSrc" mime="{Id/Mime}" -->
+	<Link href="{Id/src}" target="_blank"  
+		text="Identity Card Picture"
+		emphasized="true"/>
+	<mylib:Attachment src='{Id/src}' id="idAttachment"
+	   />
+</VBox>
+
+<VBox>
+	<Link href="{Photo/src}" target="_blank"  
+		text="Photo Picture"
+		emphasized="true"/>
+	<mylib:Attachment src="{Photo/src}"  id="photoAttachment"
+	   />
+</VBox>
+
+<VBox>
+	<Link href="{Form/src}"  target="_blank"
+		text="Registration Form (click to open in new file)" 
+		emphasized="true"/>
+	<mylib:Attachment src="{Form/src}"  id="formAttachment"
+	  width="800px"  height="800px" />
+</VBox>
+
+</l:Grid>
+</Panel>
+
+		 <footer>
+            <Bar>
+                <contentRight>
+                	<Button
+                        text="Delete"
+                        type="Emphasized"
+                        icon="sap-icon://delete"
+                        id="deleteBtn"
+                        press="onDeletePressed"
+                        enabled="{= !!${Status} }"
+                        >
+                    </Button>
+                    <Button
+                        text="Approve"
+                        type="Accept"
+                        icon="sap-icon://approvals"
+                        id="approveBtn"
+                        press="onApproveRejectPressed"
+                        enabled="{path: 'Status', formatter: '.fmtApproveEnableStatus'}"
+                        >
+                    </Button>
+                    <Button
+                        text="Reject"
+                        type="Reject"
+                        icon="sap-icon://employee-rejections"
+                        id="rejectBtn"
+                        enabled="{path: 'Status', formatter: '.fmtApproveEnableStatus'}"
+                        press="onApproveRejectPressed">
+                    </Button>
+                </contentRight>
+            </Bar>
+        </footer>
+
+    </Page>
+</core:FragmentDefinition>       
+

@@ -1,0 +1,60 @@
+<core:View
+    controllerName="csr.explore.controller.Explore"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+<App>
+<pages>
+    <Page   title="2016 SAP Great Wall Marathon"
+        titleLevel="H2">
+        <content>
+            <IconTabBar expandable="false"  id="iconTabBar"  select="onTconTabBarSelectChanged"
+                selectedKey="Registrations">
+                <items>
+                    <IconTabFilter
+                        text="Registrations"  key="Registrations"
+                        icon="sap-icon://physical-activity">
+                        <content>
+                            <core:Fragment
+                                fragmentName="csr.explore.view.Registration" type="XML">
+                            </core:Fragment>
+                        </content>
+                    </IconTabFilter>
+                    <IconTabFilter
+                        text="Donations"  key="Donations"
+                        icon="sap-icon://simple-payment">
+                        <content>
+                            <core:Fragment
+                                fragmentName="csr.explore.view.Donation" type="XML">
+                            </core:Fragment>
+                        </content>
+                    </IconTabFilter>
+
+                    <IconTabFilter
+                        text="Statistics"  key="Statistics"
+                        icon="sap-icon://multiple-bar-chart">
+                        <content>
+                            <core:Fragment
+                                fragmentName="csr.explore.view.Statistics" type="XML">
+                            </core:Fragment>
+                        </content>
+                    </IconTabFilter>
+                    
+                </items>
+            </IconTabBar>
+        </content>
+        <footer>
+            <Bar>
+                <contentRight>
+                    <Button  id="donateBtn"  enabled="false"
+                        text="Donate (choose rows to donate)"
+                        icon="sap-icon://simple-payment"
+                        type="Emphasized"
+                        press="onDonatePressed">
+                    </Button>
+                </contentRight>
+            </Bar>
+        </footer>
+    </Page>
+</pages>
+</App>
+</core:View>

@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="UTF-8">
+
+		<title>Marathon Registration</title>
+<!-- src="../../resources/sap-ui-core.js" -->
+
+		<script id="sap-ui-bootstrap"
+			src="http://veui5infra.dhcp.wdf.sap.corp:8080/sapui5-sdk-dist/resources/sap-ui-core.js"
+			data-sap-ui-libs="sap.m,sap.ui.table,sap.ui.unified,sap.chart,sap.viz"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-xx-bindingSyntax="complex"
+			data-sap-ui-resourceroots='{"csr": "../"}'>
+		</script>
+
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+
+		<script>
+			sap.ui.getCore().attachInit(function() {
+				new sap.m.Shell({
+					app: new sap.ui.core.ComponentContainer({
+						height : "100%",
+						name : "csr.explore"
+					})
+				}).placeAt("content");
+			});
+		</script>
+	</head>
+
+	<body class="sapUiBody" id="content">
+	</body>
+
+</html>

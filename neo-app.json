@@ -28,15 +28,22 @@
 		},
 
 		{
-			"path": "/odata/CustomerPaymentPortal/",
+			"path": "/csrodata",
 			"target": {
 				"type": "destination",
-				"name": "SAPCustomerPaymentPortalCoreDestination",
-				"entryPath": "/ODataSrv"
+				"name": "csrodata"
 			},
-			"description": "BD Olingo Srv"
+			"description": "csrodata Srv"
 		}
 
+		{
+			"path": "/attachmentUploader",
+			"target": {
+				"type": "destination",
+				"name": "attachmentUploader"
+			},
+			"description": "attachmentUploader Srv"
+		}
 	],
 	"cacheControl": [{
 		"directive": "private",

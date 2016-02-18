@@ -1,0 +1,192 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:table="sap.ui.table"  xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:core="sap.ui.core">
+
+    <Toolbar>
+        <content>
+            <ToolbarSpacer>
+            </ToolbarSpacer>
+            <SegmentedButton >
+                <buttons>
+                    <Button
+                        text="Overall"
+                        id="overallSegment" press="onDonationSegmentSelected">
+                    </Button>
+                    <Button
+                        text="My Donations" press="onDonationSegmentSelected"
+                        id="mySegment">
+                    </Button>
+                </buttons>
+            </SegmentedButton>
+            <ToolbarSpacer>
+            </ToolbarSpacer>
+        </content>
+    </Toolbar>
+    <table:Table  visibleRowCount="30"
+        id="donationTable"
+        rows="{/Donations}">
+        <table:columns>
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Donator">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{DonatorId}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Donatory">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{DonatoryId}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Amount">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Amount}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Comment">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Comment}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Donate Time">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{path:'ModifiedTime',formatter:'.fmtTime'}">
+                    </Text>
+                </table:template>
+            </table:Column>
+        </table:columns>
+    </table:Table>
+
+<HBox id="myDonationBox"  visible="false">
+        <items>
+    <table:Table  title="My Received Donations"
+        id="receivedDonationTable"  visibleRowCount="25"
+        rows="{/Donations}">
+        <table:columns>
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Donator">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{DonatorId}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Amount">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Amount}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
+                <table:Column>    
+                <table:label>
+                    <Label
+                        text="Comment">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Comment}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            
+        </table:columns>
+    </table:Table>
+
+<html:div style="width:2rem" /> 
+<table:Table  title="My Giving Donations"
+        id="givingDonationTable"  visibleRowCount="25"
+        >
+        <table:columns>
+           
+           <table:Column>
+                <table:label>
+                    <Label
+                        text="Donatory">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{DonatoryId}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Amount">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Amount}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Comment">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Comment}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
+        </table:columns>
+    </table:Table>
+
+    </items>
+</HBox>
+
+</core:FragmentDefinition>

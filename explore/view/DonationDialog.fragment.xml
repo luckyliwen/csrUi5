@@ -1,0 +1,89 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"  xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:core="sap.ui.core">
+
+    <Dialog
+        title="Donation Setting Dialog"
+        contentWidth="500px">
+        <content>
+            <form:SimpleForm>
+                <Label
+                    text="Donatories">
+                </Label>
+                <Text
+                    id="donatoryTxt">
+                </Text>
+                <Label
+                    text="Amount (RMB)"
+                    required="true">
+                </Label>
+                <VBox>
+                    <items>
+                        <HBox>
+                            <items>
+                                <RadioButton id="amount50"  
+                                    text="50"
+                                    groupName="amount">
+                                </RadioButton>
+                                <RadioButton  id="amount100"
+                                    text="100"
+                                    groupName="amount"
+                                    selected="true">
+                                </RadioButton>
+                                <RadioButton id="amount200"
+                                    text="200"
+                                    groupName="amount">
+                                </RadioButton>
+                                <RadioButton  id="amount500"
+                                    text="500"
+                                    groupName="amount">
+                                </RadioButton>
+                                <RadioButton
+                                    text="1000"  id="amount1000"
+                                    groupName="amount">
+                                </RadioButton>
+                            </items>
+                        </HBox>
+                        <HBox>
+                            <items>
+                                <RadioButton
+                                    text="Other"  id="otherAmountBtn"
+                                    groupName="amount"
+                                    select="onOtherAmountSelect">
+                                </RadioButton>
+                                <html:div style="width:2rem" />
+                                <Input
+                                    type="Number" enabled="false"  liveChange="onOtherAmountChanged"
+                                    id="otherAmountInput">
+                                </Input>
+                            </items>
+                        </HBox>
+                    </items>
+                </VBox>
+                <Label
+                    text="Comments">
+                </Label>
+              
+                <TextArea  id="commentInput"
+                    rows="4">
+                </TextArea>
+            </form:SimpleForm>
+        </content>
+        <beginButton>
+            <Button
+                text="OK" id="donationOkBtn"
+                type="Accept"
+                icon="sap-icon://accept"
+                press="onDonationOkPressed">
+            </Button>
+        </beginButton>
+        <endButton>
+            <Button
+                text="Cancel"
+                icon="sap-icon://sys-cancel"
+                press="onDonationCancelPressed">
+            </Button>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

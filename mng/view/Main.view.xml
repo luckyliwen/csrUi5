@@ -1,0 +1,51 @@
+<core:View
+    controllerName="csr.mng.controller.Main"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <SplitApp>
+        <masterPages>
+            <Page
+                title="Approve Marathon">
+                <content>
+                    <SearchField
+                        id="searchEvent"
+                        search="onListSearchPressed"
+                        liveChange="onListSearchLiveChanged">
+                    </SearchField>
+                    <!-- , filters: [{path: 'Status', operator: 'eq', value1:'Submitted'}] -->
+                    <List
+                        id="registrationList"
+                        noDataText="no registration"
+                        mode="SingleSelectMaster"
+
+                        selectionChange="onListSelectionChanged">
+                       <!--  <items> items="{path: '/Registrations', sorter: {path: 'SubmittedTime'} }"
+                            <ObjectListItem
+                                title="{UserId}"
+                                number="{parts:[{ path: 'LastName'},{ path: 'FirstName'}]}">
+                                <firstStatus>
+                                    <ObjectStatus
+                                        text="{Status}"
+                                        state="{path: 'Status', formatter:'.fmtStatus'}">
+                                    </ObjectStatus>
+                                </firstStatus>
+                                <attributes>
+                                    <ObjectAttribute
+                                        text="{Team}">
+                                    </ObjectAttribute>
+                                </attributes>
+                            </ObjectListItem>
+                        </items> -->
+                    </List>
+                </content>
+            </Page>
+        </masterPages>
+        <detailPages>
+            <core:Fragment
+                fragmentName="csr.mng.view.Detail"
+                type="XML">
+            </core:Fragment>
+        </detailPages>
+    </SplitApp>
+</core:View>

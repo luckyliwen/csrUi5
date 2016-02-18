@@ -1,0 +1,185 @@
+<core:FragmentDefinition
+    xmlns:table="sap.ui.table"
+    xmlns="sap.m"  xmlns:mylib="csr.lib"
+    xmlns:core="sap.ui.core">
+ 
+    <table:Table id="registrationTable"
+        visibleRowCount="30"  showColumnVisibilityMenu="true"
+        rows="{/Registrations}" selectionMode="MultiToggle"
+        rowSelectionChange="onRegistrationTableRowSelectChanged">
+        <table:columns>
+            <table:Column id="UserId">
+                <table:label>
+                    <Label
+                        text="UserId">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <mylib:UserLink 
+                        text="{UserId}" href="{path: 'UserId', formatter: '.fmtUserHref'}" />
+                </table:template>
+            </table:Column>
+            <table:Column >
+                <table:label>
+                    <Label
+                        text="LastName">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{LastName}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="FirstName">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{FirstName}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Gender">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Gender}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column visible="false">
+                <table:label>
+                    <Label
+                        text="Email">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Email}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Phone">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Phone}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Nationality">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Nationality}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <!-- <table:Column>
+                <table:label>
+                    <Label
+                        text="Birthday">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Birthday}">
+                    </Text>
+                </table:template>
+            </table:Column> -->
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Distance">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Distance}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Status">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <ObjectStatus
+                            text="{Status}"
+                            state="{path: 'Status', formatter:'.fmtStatus'}">
+                    </ObjectStatus>
+                </table:template>
+            </table:Column>
+
+            
+            <table:Column visible="true">
+                <table:label>
+                    <Label
+                        text="Reason">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{RejectReason}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
+            <table:Column visible="false">
+                <table:label>
+                    <Label
+                        text="Team">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Team}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column visible="false">
+                <table:label>
+                    <Label
+                        text="TshirtSize">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{TshirtSize}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column visible="false">
+                <table:label>
+                    <Label
+                        text="Club">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Club}">
+                    </Text>
+                </table:template>
+            </table:Column>
+        </table:columns>
+    </table:Table>
+
+</core:FragmentDefinition>

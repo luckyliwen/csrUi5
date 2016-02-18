@@ -1,0 +1,115 @@
+<mvc:View controllerName="csr.register.controller.Register" 
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout"
+	xmlns:mylib="csr.lib"
+	xmlns="sap.m">
+	<App>
+		<pages>
+			<Page title='{path: "/Status", formatter: ".fmtPageTitle"}' id="registerPage">
+				<content>
+					<l:VerticalLayout
+						class="sapUiContentPadding"
+						width="100%">
+						<l:content>
+							<form:SimpleForm id="eventForm" title="{i18n>EventInfo}" editable="false" width="100%">
+								<form:content>
+									<core:Title text="" />
+										<Image 
+											src="../images/marathon.jpg"
+											densityAware="false"
+											width="30%" >
+										</Image>
+									<core:Title />
+									<Label text="Time" textAlign="left"/>
+									<Text text="March, 2016" />
+									<Label text="Location" textAlign="left" />
+									<Text text="Bei Jing, CHINA" />
+									<Label text="Detail information" textAlign="left" />
+									<Link text="http://www.great-wall-marathon.com.cn/"  href="www.marathon.cn"/>
+								</form:content>
+							</form:SimpleForm>
+							<form:SimpleForm id="registerForm" title="Your information to register" editable="true" 
+								labelSpanL="3"  labelSpanM="3"  emptySpanL="3"
+								emptySpanM="3"  columnsL="2"  columnsM="2">
+								<form:content>
+								<core:Title text="Basic" />
+									<Label text="SAP ID"  required="true" />
+									<Input value="{/UserId}" enabled="false"  />
+
+									<Label text="Last Name"  required="true" />
+									<Input value="{/LastName}"  change="onInputChanged" />
+									
+									<Label text="First Name"  required="true" />
+									<Input value="{/FirstName}"  change="onInputChanged" />
+
+									<Label text="Gender" id="GenderLabel" required="true" />
+									<mylib:SelectExt name="Gender"  selectedKey="{/Gender}"   id="Gender" />
+
+									<Label text="Email Address" id="EmailLabel" required="true" />
+									<Input value="{/Email}" id="Email"  change="onInputChanged"/>
+
+									<Label text="Title" id="TitleLabel" required="true" />
+									<mylib:SelectExt name="Title" selectedKey="{/Title}" id="Title" />
+
+									<Label text="Birthday" id="BirthdayLabel" required="true" />
+									<Input value="{path: '/Birthday', formatter: '.fmtBirthday'}" id="Birthday"  type="Date"  
+										change="onInputChanged"/>
+
+										<!-- displayFormat="YYYY-MM-DD"  valueFormat="YYYY-MM-DD" -->
+									
+								<core:Title text="Detail" />
+									
+									<Label text="Phone"  required="true" />
+									<Input value="{/Phone}" id="Phone"  change="onInputChanged" />
+
+									<Label text="Distance" id="DistanceLabel" required="true" />
+									<mylib:SelectExt name="Distance"  id="Distance" 
+										selectedKey="{/Distance}" />
+
+									<Label text="TshirtSize" id="TshirtSizeLabel" required="true" />
+									<mylib:SelectExt name="TshirtSize"  selectedKey="{/TshirtSize}" id="TshirtSize" />
+
+									<Label text="Nationality" id="NationalityLabel" required="true" />
+									<mylib:SelectExt name="Nationality"  selectedKey="{/Nationality}" id="Nationality" />
+								
+																	
+									<Label text="Team" id="TeamLabel" required="true" />
+									<mylib:SelectExt name="Team" selectedKey="{/Team}"  id="Team" />
+
+									<Label text="Club" id="ClubLabel" required="true" />
+									<mylib:SelectExt name="Club" selectedKey="{/Club}" id="Club" />
+
+								<core:Title text="Attachments" />
+								    <Label text="ID / 身份证" required="true" />
+                					<mylib:FileUploaderExt  id="fileUploaderId" width="400px"  selectFile="onAttachmentSelectChanged"
+                    					useMultipart="false"  sendXHR="true" fileName="{/FileNameId}" 
+                    					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
+
+									<Label text="Photo" required="true" />
+                					<mylib:FileUploaderExt  id="fileUploaderPhoto" width="400px" selectFile="onAttachmentSelectChanged"
+                    					useMultipart="false"  sendXHR="true" fileName="{/FileNamePhoto}" 
+                    					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
+
+                    				<Label text="Form" required="true" />
+                					<mylib:FileUploaderExt  id="fileUploaderForm" width="400px" selectFile="onAttachmentSelectChanged"
+                    					useMultipart="false"  sendXHR="true" fileName="{/FileNameForm}"
+                    					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
+
+								</form:content>
+							</form:SimpleForm>
+						</l:content>
+					</l:VerticalLayout>
+				</content>
+				<footer>
+		            <Bar id="footerBar">
+		               
+		            </Bar>
+		        </footer>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
+
