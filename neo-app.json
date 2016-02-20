@@ -60,7 +60,7 @@
 	}],
 	"securityConstraints": [
         {
-            "permission": "Admin",
+            "permission": "Everyone",
             "description": "Access User Data",
             "protectedPaths": [
                 "/"
