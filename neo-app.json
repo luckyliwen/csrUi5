@@ -1,7 +1,7 @@
 {
 	
 	"welcomeFile": "register/index.html",
-	"sendWelcomeFileRedirect": true,
+	
 	"routes": [{
 			"path": "/resources",
 			"target": {
@@ -60,7 +60,7 @@
 	}],
 	"securityConstraints": [
         {
-            "permission": "Everyone",
+            
             "description": "Access User Data",
             "protectedPaths": [
                 "/"
