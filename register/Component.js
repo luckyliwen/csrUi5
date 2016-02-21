@@ -1,9 +1,9 @@
 sap.ui.define([
 	"sap/ui/core/UIComponent",
-	"sap/ui/Device",
-	"csr/lib/Config",
-	"csr/lib/SelectExt"
-], function(UIComponent, Device, Config,SelectExt) {
+	"sap/ui/Device"
+	// "csr/lib/Config",
+	// "csr/lib/SelectExt"
+], function(UIComponent, Device/*, Config,SelectExt*/) {
 	"use strict";
 
 	return UIComponent.extend("csr.register.Component", {
@@ -18,11 +18,19 @@ sap.ui.define([
 		 * @override
 		 */
 		init: function() {
-			// call the base component's init function
-			UIComponent.prototype.init.apply(this, arguments);
+			var currPath = jQuery.sap.getModulePath("csr.register");
+			var pos = currPath.lastIndexOf("/");
+			jQuery.sap.registerModulePath('csr.lib', currPath.substr(0, pos)+"/lib" );
 
-			// set the device model
-			this.setModel(Config.getModel(), "cfg");
+			var that = this;
+			sap.ui.require(["csr/lib/Config"], function(Config) {
+				// set the device model
+				that.setModel(Config.getModel(), "cfg");
+
+				// call the base component's init function
+				UIComponent.prototype.init.apply(that, arguments);
+
+			});
 		}
 	});
 
