@@ -151,7 +151,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
                 },
                 title: {
                     visible: true,
-                    text: 'Top 10 of received Donations'
+                    text: 'Top 10 Received Donations'
                 }
         });
 
@@ -203,7 +203,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
                 },
                 title: {
                     visible: true,
-                    text: 'Top 10 of Giving Donations'
+                    text: 'Top 10 Giving Donations'
                 }
         });
 	},

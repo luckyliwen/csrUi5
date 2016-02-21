@@ -34,7 +34,7 @@
                 <items>
                             
                 <viz:VizFrame id="receivedViz" uiConfig="{applicationSet:'fiori'}"
-                         height='450px' width="500px" vizType='bar'>
+                         height='550px' width="450px" vizType='bar'>
                 <viz:dataset>
                     <viz.data:FlattenedDataset data="{/Received}">
                         <viz.data:dimensions>
@@ -56,10 +56,10 @@
                 </viz:feeds>
             </viz:VizFrame>
 
-        <html:div style="width:50rem" /> 
+          <html:div style="width:50px" /> 
 
             <viz:VizFrame id="givingViz" uiConfig="{applicationSet:'fiori'}"
-                         height='450px' width="500px" vizType='bar'>
+                         height='550px' width="450px" vizType='bar'>
                 <viz:dataset>
                     <viz.data:FlattenedDataset data="{/Giving}">
                         <viz.data:dimensions>
