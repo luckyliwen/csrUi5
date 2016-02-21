@@ -24,16 +24,6 @@ sap.ui.define([
 
 			// call the base component's init function
 			UIComponent.prototype.init.apply(this, arguments);
-
-			var that = this;
-			/*sap.ui.require(["csr/lib/Config"], function(Config) {
-				// set the device model
-				that.setModel(Config.getModel(), "cfg");
-
-				// call the base component's init function
-				UIComponent.prototype.init.apply(that, arguments);
-
-			});*/
 		}
 	});
 

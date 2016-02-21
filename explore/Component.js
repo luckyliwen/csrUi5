@@ -1,9 +1,7 @@
 sap.ui.define([
 	"sap/ui/core/UIComponent",
-	"sap/ui/Device",
-	"csr/lib/Config",
-	"csr/lib/UserLink"
-], function(UIComponent, Device, Config, UserLink) {
+	"sap/ui/Device"
+], function(UIComponent, Device) {
 	"use strict";
 
 	//first load some common used controls
@@ -22,11 +20,12 @@ sap.ui.define([
 		 * @override
 		 */
 		init: function() {
+			var currPath = jQuery.sap.getModulePath("csr.explore");
+			var pos = currPath.lastIndexOf("/");
+			jQuery.sap.registerModulePath('csr.lib', currPath.substr(0, pos)+"/lib" );
+
 			// call the base component's init function
 			UIComponent.prototype.init.apply(this, arguments);
-
-			// set the device model
-			this.setModel(Config.getModel(), "cfg");
 		}
 	});
 
