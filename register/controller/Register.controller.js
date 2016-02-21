@@ -11,6 +11,8 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	onInit:function() {
 		BaseController.prototype.onInit.call(this);
 
+		this.setModel(Config.getModel(), "cfg");
+
     	gf = this.byId("registerForm");
 		gc = this; 
 
