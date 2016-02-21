@@ -18,7 +18,7 @@
 								<form:content>
 									<core:Title text="" />
 										<Image 
-											src="../images/marathon.jpg"
+											src="https://csr-p1941885273trial.dispatcher.hanatrial.ondemand.com/images/marathon.jpg"
 											densityAware="false"
 											width="30%" >
 										</Image>
@@ -28,7 +28,7 @@
 									<Label text="Location" textAlign="left" />
 									<Text text="Bei Jing, CHINA" />
 									<Label text="Detail information" textAlign="left" />
-									<Link text="http://www.great-wall-marathon.com.cn/"  href="www.marathon.cn"/>
+									<Link text="http://www.great-wall-marathon.com.cn/"  href="http://www.great-wall-marathon.com.cn/"/>
 								</form:content>
 							</form:SimpleForm>
 							<form:SimpleForm id="registerForm" title="Your information to register" editable="true" 
