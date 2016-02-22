@@ -79,7 +79,7 @@
 									<Label text="Team" id="TeamLabel" required="true" />
 									<mylib:SelectExt name="Team" selectedKey="{/Team}"  id="Team" />
 
-									<Label text="Club" id="ClubLabel" required="true" />
+									<Label text="Club" id="ClubLabel" required="false" />
 									<mylib:SelectExt name="Club" selectedKey="{/Club}" id="Club" />
 
 								<core:Title text="Attachments" />

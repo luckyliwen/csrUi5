@@ -41,12 +41,36 @@
             <table:Column>
                 <table:label>
                     <Label
+                        text="Donator Name">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{DonatorName}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <table:label>
+                    <Label
                         text="Donatory">
                     </Label>
                 </table:label>
                 <table:template>
                      <mylib:UserLink 
                         text="{DonatoryId}" href="{path: 'DonatoryId', formatter: '.fmtUserHref'}" />
+                </table:template>
+            </table:Column>
+             <table:Column>
+                <table:label>
+                    <Label
+                        text="Donatory Name">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{DonatoryName}">
+                    </Text>
                 </table:template>
             </table:Column>
             <table:Column>
@@ -109,6 +133,18 @@
             <table:Column>
                 <table:label>
                     <Label
+                        text="Donator Name">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{DonatorName}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <table:label>
+                    <Label
                         text="Amount">
                     </Label>
                 </table:label>
@@ -150,6 +186,19 @@
                 <table:template>
                      <mylib:UserLink 
                         text="{DonatoryId}" href="{path: 'DonatoryId', formatter: '.fmtUserHref'}" />
+                </table:template>
+            </table:Column>
+
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Donatory Name">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{DonatoryName}">
+                    </Text>
                 </table:template>
             </table:Column>
 
