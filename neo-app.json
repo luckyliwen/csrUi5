@@ -45,7 +45,27 @@
 			"path": "/attachmentUploader",
 			"target": {
 				"type": "destination",
-				"name": "attachmentUploader"
+				"name": "attachmentUploader",
+				"entryPath": "/Attachment"
+			},
+			"description": "attachmentUploader Srv"
+		},
+		{
+			"path": "/sap/ui5/1/resources/odata/CsrODataSrv",
+			"target": {
+				"type": "destination",
+				"name": "csrodata",
+				"entryPath": "/ODataSrv"
+			},
+			"description": "csrodata Srv"
+		},
+
+		{
+			"path": "/sap/ui5/1/resources/attachmentUploader",
+			"target": {
+				"type": "destination",
+				"name": "attachmentUploader",
+				"entryPath": "/Attachment"
 			},
 			"description": "attachmentUploader Srv"
 		}
