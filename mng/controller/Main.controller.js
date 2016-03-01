@@ -150,7 +150,9 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 
 		//by default the initial file name is ""
 		this.oPanel.setBusy(true);
+
 	    this.oDataModel.read(url, {
+	    	
 			success: onGetUploadAttachmentSuccess,
 			error:  onGetUploadAttachmentError
 		});

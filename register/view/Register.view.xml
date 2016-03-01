@@ -14,57 +14,58 @@
 						class="sapUiContentPadding"
 						width="100%">
 						<l:content>
-							<form:SimpleForm id="eventForm" title="{i18n>EventInfo}" editable="false" width="100%">
+							 <!-- Simple CSR developed by Let’s Shine Dream Team" -->
+							<form:SimpleForm id="eventForm" title="2016 Create Wall Marathon informaiton"
+								editable="false" width="100%">
 								<form:content>
-									<core:Title text="" />
-										<Image 
-											src="https://csr-p1941885273trial.dispatcher.hanatrial.ondemand.com/images/marathon.jpg"
-											densityAware="false"
-											width="30%" >
-										</Image>
 									<core:Title />
-									<Label text="Time" textAlign="left"/>
-									<Text text="March, 2016" />
-									<Label text="Location" textAlign="left" />
-									<Text text="Bei Jing, CHINA" />
+									<Label text="Closing date for registration" />
+  									<Title titleStyle="H5" text="12:00PM, April 1st" />
+									<Label text="Event date &amp; venue" />
+  									<Title titleStyle="H5" text="May 21st (Sat), Huang-ya-guan Great Wall, Tianjin" />
+
+									<core:Title />
+									<Label text="Runner Candidate Number" />
+  									<Title titleStyle="H5" text="120  First Registering, Frist get!" />
+
 									<Label text="Detail information" textAlign="left" />
 									<Link text="http://www.great-wall-marathon.com.cn/"  href="http://www.great-wall-marathon.com.cn/"/>
 								</form:content>
 							</form:SimpleForm>
-							<form:SimpleForm id="registerForm" title="Your information to register" editable="true" 
+							<form:SimpleForm id="registerForm" title="My Registration Information" editable="true" 
 								labelSpanL="3"  labelSpanM="3"  emptySpanL="3"
 								emptySpanM="3"  columnsL="2"  columnsM="2">
 								<form:content>
 								<core:Title text="Basic" />
-									<Label text="SAP ID"  required="true" />
+									<Label text="SAP ID and Name"  required="true" />
 									<Input value="{/UserId}" enabled="false"  />
-
-									<Label text="Last Name"  required="true" />
-									<Input value="{/LastName}"  change="onInputChanged" />
+									<Input value="{/LastName}, {/FirstName}" enabled="false" />
 									
-									<Label text="First Name"  required="true" />
-									<Input value="{/FirstName}"  change="onInputChanged" />
+									<Label text="Surame (拼音:姓)" id="RegLastNameLabel" required="true" />
+									<Input value="{/RegLastName}" placeholder="Same as Passport or ID card"  change="onInputChanged"/>
 
-									<Label text="Gender" id="GenderLabel" required="true" />
-									<mylib:SelectExt name="Gender"  selectedKey="{/Gender}"   id="Gender" />
+									<Label text="First Name (拼音:名)" id="RegFirstNameLabel" required="true" />
+									<Input value="{/RegFirstName}" placeholder="Same as Passport or ID card" change="onInputChanged"/>
 
-									<Label text="Email Address" id="EmailLabel" required="true" />
-									<Input value="{/Email}" id="Email"  change="onInputChanged"/>
+									<Label text="Nationality" id="NationalityLabel" required="true" />
+									<mylib:SelectExt name="Nationality"  selectedKey="{/Nationality}" id="Nationality" 
+										change="onNationalityChanged" />
+									<Input id="OtherNationality" value="{/OtherNationality}"  enabled="false"  />
+									<!-- enabled = "{=  ${Nationality}=='Others' ?  true : false  }" -->
 
 									<Label text="Title" id="TitleLabel" required="true" />
 									<mylib:SelectExt name="Title" selectedKey="{/Title}" id="Title" />
 
-									<Label text="Birthday" id="BirthdayLabel" required="true" />
-									<Input value="{path: '/Birthday', formatter: '.fmtBirthday'}" id="Birthday"  type="Date"  
-										change="onInputChanged"/>
-
-										<!-- displayFormat="YYYY-MM-DD"  valueFormat="YYYY-MM-DD" -->
+									<Label text="Age" id="AgeLabel" required="true" />
+									<Input value="{/Age}" id="Age"  change="onInputChanged"/>
 									
-								<core:Title text="Detail" />
-									
+									<Label text="Email Address" id="EmailLabel" required="true" />
+									<Input value="{/Email}" id="Email"  change="onInputChanged"/>
+								
 									<Label text="Phone"  required="true" />
 									<Input value="{/Phone}" id="Phone"  change="onInputChanged" />
-
+									
+								<core:Title text="Detail" />
 									<Label text="Distance" id="DistanceLabel" required="true" />
 									<mylib:SelectExt name="Distance"  id="Distance" 
 										selectedKey="{/Distance}" />
@@ -72,28 +73,49 @@
 									<Label text="TshirtSize" id="TshirtSizeLabel" required="true" />
 									<mylib:SelectExt name="TshirtSize"  selectedKey="{/TshirtSize}" id="TshirtSize" />
 
-									<Label text="Nationality" id="NationalityLabel" required="true" />
-									<mylib:SelectExt name="Nationality"  selectedKey="{/Nationality}" id="Nationality" />
-								
+									 <Label text="Previous best time" />
+									 <VBox width="100%">
+			                            <HBox> <Label text="Full Marathon" width="120px" /> 
+	                                    	   <Input value="{/FullBestTime}" placeholder="hh:mm:ss, like 01:10:12" /> 
+	                                    </HBox>
+	                                       <HBox> <Label text="Half Marathon" width="120px" /> 
+	                                    	   <Input value="{/HalfBestTime}" placeholder="hh:mm:ss, like 01:10:12" /> 
+	                                    </HBox>
+	                                       <HBox> <Label text="8.5K Fun Run" width="120px" /> 
+	                                    	   <Input value="{/FunBestTime}" placeholder="hh:mm:ss, like 01:10:12" /> 
+	                                    </HBox>
+	                                </VBox>
 																	
-									<Label text="Team" id="TeamLabel" required="true" />
-									<mylib:SelectExt name="Team" selectedKey="{/Team}"  id="Team" />
+									<Label text="Department" id="DepartmentLabel" required="true" />
+									<mylib:SelectExt name="Department" selectedKey="{/Department}"  id="Department" />
+
+									<Label text="Work Location" id="LocationLabel" required="true" />
+									<mylib:SelectExt name="Location" selectedKey="{/Location}"  id="Location" />
 
 									<Label text="Club" id="ClubLabel" required="false" />
 									<mylib:SelectExt name="Club" selectedKey="{/Club}" id="Club" />
 
-								<core:Title text="Attachments" />
-								    <Label text="ID / 身份证" required="true" />
+								<core:Title text="Attachments (Move mouse to label to see detail instruction)" /> 
+								    <Label text="ID(身份证) or Passport" required="true" tooltip="For Chinese: 身份证, 正反面一起 For foreigner: passport: the page with photo"/>
                 					<mylib:FileUploaderExt  id="fileUploaderId" width="400px"  selectFile="onAttachmentSelectChanged"
                     					useMultipart="false"  sendXHR="true" fileName="{/FileNameId}" 
                     					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
 
-									<Label text="Photo" required="true" />
+                    				<Label text="Foreign Residence Permit" required="true" id="labelUploaderResidence" 
+                    					tooltip="The foreigner residence permit in China is not your visa but your residence permit that gives you the right to live in China. Upon arrival in China, you have 30 days to obtain your residence permit"/>
+
+                					<mylib:FileUploaderExt  id="fileUploaderResidence" width="400px"  selectFile="onAttachmentSelectChanged"
+                    					useMultipart="false"  sendXHR="true" fileName="{/FileNameResidence}" 
+                    					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
+
+									<Label text="Photo" required="true" 
+										tooltip="Photo of headshot, used for create poster"/>
                 					<mylib:FileUploaderExt  id="fileUploaderPhoto" width="400px" selectFile="onAttachmentSelectChanged"
                     					useMultipart="false"  sendXHR="true" fileName="{/FileNamePhoto}" 
                     					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
 
-                    				<Label text="Form" required="true" />
+                    				<Label text="Form" required="true" 
+                    					tooltip="Fill necessary information carefully and rember to sign it"/>
                 					<mylib:FileUploaderExt  id="fileUploaderForm" width="400px" selectFile="onAttachmentSelectChanged"
                     					useMultipart="false"  sendXHR="true" fileName="{/FileNameForm}"
                     					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
@@ -105,7 +127,18 @@
 				</content>
 				<footer>
 		            <Bar id="footerBar">
-		               
+		            <contentMiddle>
+	                    <Button
+	                        text="Download Registration Form"
+	                        icon="sap-icon://download"
+	                        press="onDownloadFormPressed">
+	                    </Button>
+	                    <Button
+	                        text="Team Managment"  id="mngTeamBtn"  enabled = 'false'
+	                        icon="sap-icon://collaborate"
+	                        press="onManageTeamPressed">
+	                    </Button>
+                	</contentMiddle>
 		            </Bar>
 		        </footer>
 			</Page>

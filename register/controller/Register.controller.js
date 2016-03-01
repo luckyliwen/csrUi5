@@ -36,14 +36,228 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 			//this[name].setUploadUrl
 			// this.oUploader[ key ].attachSelectFile(this.checkButtonStatus, this);
 		}
+
+		//myTeamId,  myTeamName
 	},
 	
 	fmtPageTitle: function( status ) {
-	    return "My Regisgter : status [ " + status + " ]";
+	    return "My Registration : status [ " + status + " ]";
 	},
 	
 
-	onGetInitialDataFinished: function( evt ) {
+	onDownloadFormPressed: function( evt ) {
+	    window.open("http://localhost:8524/csrodata/Runner_Form.pdf", "_blank");
+	},
+
+	onManageTeamPressed: function( evt ) {
+		if (!this.oTeamMngDialog) {
+			this.oTeamMngDialog = sap.ui.xmlfragment(this.getView().getId(), "csr.register.view.TeamMng", this);
+			this.oTeamTable  = this.byId("teamTable");
+
+			//so for the first time it will get the data
+			this.oTeamTable.setModel( this.oDataModel );
+
+			this.loadMyTeamInformation();
+		}
+		this.oTeamMngDialog.open();
+	},
+
+	loadMyTeamInformation: function( ) {
+		var that = this;
+
+		function onGetMyTeamSuccess(oData) {
+			that.oTeamMngDialog.setBusy(false);
+			if (oData.results.length >0) {
+				that.byId("teamNameInput").setValue( oData.results[0].Name);
+				that.byId("changeTeamBtn").setVisible(true);
+
+				that.myTeamId = oData.results[0].TeamId;
+			} else {
+				that.byId("createTeamBtn").setVisible(true);
+			}
+		}
+
+		function onGetMyTeamError(error) {
+			that.oTeamMngDialog.setBusy(false);
+			Util.showError("Failed to get my create team.", error);
+		}
+
+
+
+		// var url = "/Teams?$filter=OwnerId eq '" + that.mRegister.UserId + "'";
+	    this.oDataModel.read("/Teams", {
+	    	filters: [new sap.ui.model.Filter("OwnerId", 'EQ', that.mRegister.UserId)],
+			success: onGetMyTeamSuccess,
+			error: onGetMyTeamError
+		});
+
+		that.oTeamMngDialog.setBusy(true);
+	},
+
+	onTeamNameChanged : function( evt ) {
+		var source = evt.getSource();
+	    var val = source.getValue().trim();
+	    if ( val.length> 0) {
+			this.byId("createTeamBtn").setEnabled(true);
+	    }
+
+	    if (this.myTeamName != val) {
+	    	this.byId("changeTeamBtn").setEnabled(true);
+	    } 
+	},
+	
+
+	onCreateOrChangeTeamPressed: function( evt ) {
+	    var bCreate = true;
+	    if (evt.getSource().getId().indexOf("changeTeamBtn")!= -1) {
+	    	bCreate = false;
+	    }
+
+	    var that = this;
+	    function onCreateOrChangeSuccess(oData) {
+			that.oTeamMngDialog.setBusy(false);
+			if (bCreate) {
+				Util.showToast("Create team successful!");
+
+				that.myTeamName = that.byId("teamNameInput").getValue();
+				that.byId("changeTeamBtn").setVisible(true);
+				that.byId("changeTeamBtn").setEnabled(false);
+
+				that.byId("createTeamBtn").setVisible(false);
+
+				that.myTeamId = oData.TeamId;
+
+				//if already have the rigistration, and team id not set, then set it here
+				if ( that.mRegister.TeamId == "0" && that.mRegister.Status != "New") {
+					//if is new, then when it create registration, it will create automatically 
+					that.onTeamRequestJoinPressed(null, oData.TeamId);
+				}
+			} else {
+				Util.showToast("Change team name successful!");
+				that.byId("changeTeamBtn").setEnabled(false);
+			}
+	    }
+
+	    function onCreateOrChangeError(error) {
+	    	that.oTeamMngDialog.setBusy(false);
+	    	var action = bCreate ? "Create new team " : " change team name";
+	    	Util.showError("Failed to " + action, error);
+	    }
+
+	    var mParam = {
+	    	success: onCreateOrChangeSuccess,
+	    	error: onCreateOrChangeError
+	    };
+
+		var mData;
+	    if (bCreate) {
+	    	mData = {
+	    		Name: this.byId("teamNameInput").getValue(),
+	    		OwnerId: this.mRegister.UserId
+	    	};
+	    	this.oDataModel.create("/Teams", mData, mParam);
+	    } else {
+	    	var url = "/Teams("  + this.myTeamId + "L)";
+	    	mData = { Name: this.byId("teamNameInput").getValue() };
+	    	this.oDataModel.update(url,  mData, mParam);
+	    }
+	    this.oTeamMngDialog.setBusy(true);
+	},
+	
+	onTeamMngCancelPressed: function( evt ) {
+	    this.oTeamMngDialog.close();
+	},
+		
+	//when press Request to join,  it may have the Registration or not	  
+	onTeamRequestJoinPressed: function( evt,  createdTeamId ) {
+		//which row it selected
+	    var bCreate = true;
+		if (this.mRegister.Status != "New") {
+	    	bCreate = false;
+	    }
+		var selTeamId = createdTeamId ?  createdTeamId: this.getSelectedRowTeamId();
+
+	    var that  = this;
+
+	    function onCreateOrChangeRegistSuccess() {
+	    	if ( !createdTeamId)
+	    		Util.showToast("Request join team successful!");
+
+			that.oTeamMngDialog.setBusy(false);
+			that.mRegister.TeamId = selTeamId;
+			that.byId("requestJoinBtn").setEnabled( false);
+
+			//after join then the table need refresh
+			that.oTeamTable.bindRows('/Teams');
+		}
+
+	    function onCreateOrChangeRegistError(error) {
+	    	that.oTeamMngDialog.setBusy(false);
+	    	Util.showError("Request to join team failed.", error);
+	    }
+	    var mParam = {
+	    	success: onCreateOrChangeRegistSuccess,
+	    	error: onCreateOrChangeRegistError
+	    };
+
+		var mData = {
+			UserId:  this.mRegister.UserId,
+			TeamId:  selTeamId
+		};
+
+	    if (bCreate) {
+	    	mData.Status = 'New';
+	    	mData.FirstName = this.mRegister.FirstName;
+	    	mData.LastName = this.mRegister.LastName;
+	    	
+	    	//here it need set the UpdateFlag
+	    	mData.UpdateFlag = Enum.UpdateFlag.New;
+			this.oDataModel.create("/Registrations", mData, mParam);
+	    } else {
+	    	var path = "/Registrations('" + this.mRegister.UserId + "')";
+	    	mData.UpdateFlag = Enum.UpdateFlag.RequestJoin;
+			this.oDataModel.update(path, mData, mParam);
+	    }
+	    this.oTeamMngDialog.setBusy(true);
+	},
+	
+	getSelectedRowTeamId : function() {
+	    var row = this.oTeamTable.getSelectedIndex();
+	    if (row == -1)
+	    	return -1;
+
+		var context = this.oTeamTable.getContextByIndex(row);
+		return context.getProperty("TeamId");
+	},
+
+	
+	onTeamTableRowSelectChanged: function( evt ) {
+	    var selTeamId = this.getSelectedRowTeamId();
+	    var flag = false;
+	    if (selTeamId != -1) {
+	    	flag = selTeamId != this.mRegister.TeamId;
+	    }
+
+	    this.byId("requestJoinBtn").setEnabled( flag  );
+	},
+	
+
+	onNationalityChanged: function( evt ) {
+		var  selKey = this.byId("Nationality").getSelectedKey();
+		var flag = (selKey == 'Others');
+	    var input = this.byId("OtherNationality").setEnabled(flag);
+
+	    this.adjustAttachmentUi();
+	},
+
+	adjustAttachmentUi: function( evt ) {
+		var bChinese = this.mRegister.Nationality == 'Chinese';
+		this.byId("labelUploaderResidence").setVisible( !bChinese );
+		this.byId("fileUploaderResidence").setVisible( !bChinese );
+	},
+	  
+
+	onGetInitialDataFinished: function() {
 	    var oModel = new sap.ui.model.json.JSONModel();
     	oModel.setData( this.mRegister );
     	oModel.setDefaultBindingMode("TwoWay");
@@ -51,12 +265,15 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
     	this.setModel(oModel);
 
 		this.createOrUpdateFooterButton();
+		this.onNationalityChanged();
+
 		this.checkButtonStatus();
 	},
 	
 	getMyResistration: function() {
 		var that = this;
 		function onGetMyRegistrationSuccess(oData) {
+			that.byId("mngTeamBtn").setEnabled(true);
 			that.getView().setBusy(false);
 
 			delete oData.__metadata;
@@ -71,7 +288,7 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	    			var selection = that.byId(key);
 	    			if (selection instanceof csr.lib.SelectExt) {
 	    				oData[key] = value.defaultValue;
-	    				selection.setSelectedKey();
+	    				// selection.setSelectedKey();
 	    			}
 	    		}
 	    	}
@@ -82,6 +299,18 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 			that.mRegister.FileNameId = "";
 			that.mRegister.FileNamePhoto = "";
 			that.mRegister.FileNameForm = "";
+			that.mRegister.FileNameResidence = "";
+			//db only store nationality, but UI need two variables
+			if ( Config.isOtherNationality(  that.mRegister.Nationality) ) {
+				that.mRegister.OtherNationality = that.mRegister.Nationality;
+				that.mRegister.Nationality = "Others";
+			}  else {
+				that.mRegister.OtherNationality = "";
+			}
+
+			if (that.mRegister.Age === 0) {
+	    		delete that.mRegister.Age;
+	    	}
 
 			//get the attachments informaiton 
 			if (that.mRegister.Status != "New") {
@@ -106,7 +335,7 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	},
 	
 	getUploadedAttachmentInfo: function(  ) {
-		var url = Util.getMyAttachmentUrl(this.mRegister.UserId);
+		// var url = Util.getMyAttachmentUrl(this.mRegister.UserId);
 		var that = this;
 
 		function onGetUploadAttachmentSuccess(oData) {
@@ -127,7 +356,8 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 			that.onGetInitialDataFinished();
 		} 
 
-	    this.oDataModel.read(url, {
+	    this.oDataModel.read("/Attachments", {
+	    	filters: [new sap.ui.model.Filter("UserId", 'EQ', that.mRegister.UserId)],
 			success: onGetUploadAttachmentSuccess,
 			error:  onGetUploadAttachmentError
 		});
@@ -146,6 +376,7 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 			var  info = aActionInfo[i];
 			var button = new sap.m.Button({
 				text: info.name,
+				icon: info.icon,
 				press: [this.onResigerActionButtonPressed, this]
 			});
 			//use the data to know how to handle
@@ -173,12 +404,11 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	    		var value = config[key];
 	    		if (value.required) {
 	    			if ( key in this.mRegister) {
+	    				//for chinese, no need check residence permit
+	    				if ( key == "FileNameResidence" && !this.byId("fileUploaderResidence").getVisible()) 
+	    					continue;
 
 	    				var realValue = this.mRegister[key];
-	    				if ( value.needQuery) {  //for Birthday
-	    					realValue = this.byId(key).getValue();
-	    				}
-
 	    				if (!realValue) {
 	    					status = false;
 	    					break;
@@ -209,6 +439,8 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	
 	//as Save, Cancel, Submit has similar logic, so use same function
 	onResigerActionButtonPressed: function( oEvent ) {
+		//for the age, need check ??
+
 		var btn = oEvent.getSource();
 		var action = btn.data("Action");
 		var oldStatus = this.mRegister.Status;
@@ -245,18 +477,33 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	    delete mData.FileNameId;
 	    delete mData.FileNamePhoto;
 	    delete mData.FileNameForm;
+	    delete mData.FileNameResidence;
 		delete mData.SubmittedTime;
 	    delete mData.ModifiedTime;
-	    delete mData.TeamExt;
-	    //for the birthday, only when not empty then need format 
-	    var birthday = this.byId("Birthday").getValue(); 
-	    if (birthday) {
-	    	mData.Birthday = this.fmtDateToODataDate(birthday);
-	    } else {
-	    	delete mData.Birthday;
+	    delete mData.OtherNationality;
+	   
+	    //for nationality, need combine value 
+	    var  selKey = this.byId("Nationality").getSelectedKey();
+		var flag = (selKey == 'Others');
+	    if (flag) {
+	    	mData.Nationality  = this.byId("OtherNationality").getValue();
+	    }
+
+	    //for the null value, need delete 
+	    for (var key in mData) {
+	    	if ( mData[key] == null) {
+	    		delete mData[key];
+	    	}
+	    }
+
+	    //for the Age, need use the number
+	    if (mData.Age) {
+	    	mData.Age = parseInt(mData.Age);
 	    }
 
 	    if (bCreate) {
+	    	//for new Registration, it need backend check whether has the initial team or not
+	    	mData.UpdateFlag = Enum.UpdateFlag.RequestJoin;
 			this.oDataModel.create("/Registrations", mData, mParam);
 	    } else {
 	    	var path = "/Registrations('" + this.mRegister.UserId + "')";
@@ -275,8 +522,7 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 
 	    for (var key in Enum.AttachmentType) {
 	     	var oUploader = this.oUploader[key];
-	     	if (oUploader.getModified()) {
-
+	     	if (oUploader.getVisible() && oUploader.getModified()) {
 	     		this.aNeedUploader.push( [key, oUploader]);
 	     	}
 	    }
