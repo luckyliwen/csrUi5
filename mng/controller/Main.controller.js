@@ -157,7 +157,8 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 			for (var i=0; i < oData.results.length; i++) {
 				var  attachment = oData.results[i];
 				var type = attachment.Type;
-				attachment.src = Util.getAttachmentDownloadUrl(userId, type);
+				//if use relative, then for the pdf it can't get, so just tmp change it
+				attachment.src = Util.getRelativeAttachmentDownloadUrl(userId, type);
 
 				mData[ type ] = attachment;
 			}
