@@ -147,7 +147,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 			return ;
 		}
 
-		var url = Util.getMyAttachmentUrl( userId );
+		// var url = Util.getMyAttachmentUrl( userId );
 		var that = this;
 
 		function onGetUploadAttachmentSuccess(oData) {
@@ -178,8 +178,8 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 		//by default the initial file name is ""
 		this.oPanel.setBusy(true);
 
-	    this.oDataModel.read(url, {
-	    	
+	    this.oDataModel.read("/Attachments", {
+	    	filters: [new sap.ui.model.Filter("UserId", 'EQ', userId )],
 			success: onGetUploadAttachmentSuccess,
 			error:  onGetUploadAttachmentError
 		});

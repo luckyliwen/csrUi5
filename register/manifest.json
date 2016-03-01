@@ -14,7 +14,7 @@
 		
 		"dataSources": {
 			"mainService": {
-				"uri": "/odata/CsrODataSrv",
+				"uri": "http://localhost:8524/csrodata/ODataSrv/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0"

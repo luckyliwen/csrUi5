@@ -5,7 +5,7 @@
 
     <Dialog
         title="Team Management Dialog"   id="teamMngDialog"
-        contentWidth="1000px">
+        contentWidth="800px">
         <content>
             <Title
                 text="You can create a team then ask colleague to join"
