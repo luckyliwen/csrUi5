@@ -9,54 +9,71 @@
     xmlns:form="sap.ui.layout.form">
 
     <Page title="{UserId}   Registration Detail Information" id="detailPage">
-    
+    <!-- <HBox>
+    	<core:HTML id="registrationInfo" />
+    	<Button text="Fresh"  icon="sap-icon://fresh" press="onFreshPressed" />
+    </HBox> -->
     <form:SimpleForm id="detailForm" editable="true"  layout="ResponsiveGridLayout"
 			labelSpanXL="5" labelSpanL="5"  labelSpanM="5"  
 			emptySpanM="0" emptySpanL="0"  emptySpanXL="0" 
 			columnsM="2" columnsL="2" columnsXL="2" >
 			<form:content>
 			<core:Title text="Basic" />
-				<!-- <Label text="SAP ID"  required="true" />
-				<Input value="{UserId}" editable="false" editable="false" />  -->
+				<Label text="SAP ID and Name"  required="true" />
+					<Input value="{UserId}" enabled="false"  />
+					<Input value="{LastName}, {FirstName}" enabled="false" />
+					
+					<Label text="Surame (拼音:姓)" id="RegLastNameLabel" required="true" />
+					<Input value="{RegLastName}" placeholder="Same as Passport or ID card"  change="onInputChanged"/>
 
-				<Label text="Last Name"  required="true" />
-				<Input value="{LastName}"  editable="false" change="onInputChanged" />
+					<Label text="First Name (拼音:名)" id="RegFirstNameLabel" required="true" />
+					<Input value="{RegFirstName}" placeholder="Same as Passport or ID card" change="onInputChanged"/>
+
+					<Label text="Nationality" id="NationalityLabel" required="true" />
+					<Input id="OtherNationality" value="{Nationality}"  />
+					
+					<Label text="Title" id="TitleLabel" required="true" />
+					<mylib:SelectExt name="Title" selectedKey="{Title}" id="Title" />
+
+					<Label text="Age" id="AgeLabel" required="true" />
+					<Input value="{Age}" id="Age"  change="onInputChanged"/>
+					
+					<Label text="Email Address" id="EmailLabel" required="true" />
+					<Input value="{Email}" id="Email"  change="onInputChanged"/>
 				
-				<Label text="First Name"  required="true" />
-				<Input value="{FirstName}"   editable="false" change="onInputChanged" />
-
-				<Label text="Gender" id="GenderLabel" required="true" />
-				<Input value="{Gender}"  editable="false"  id="Gender" />
-
-				<Label text="Email Address" id="EmailLabel" required="true" />
-				<Input value="{Email}" editable="false"  id="Email" />
-
-				<Label text="Title" id="TitleLabel" required="true" />
-				<Input value="{Title}" id="Title"  editable="false"/>
-
-				<Label text="Birthday" id="BirthdayLabel" required="true" />
-				<Input value="{path: '/Birthday', formatter: '.fmtBirthday'}"  editable="false" id="Birthday" />
+					<Label text="Phone"  required="true" />
+					<Input value="{Phone}" id="Phone"  change="onInputChanged" />
 
 			<core:Title text="Detail" />
 				
-				<Label text="Phone"  required="true" />
-				<Input value="{Phone}" id="Phone"  editable="false" change="onInputChanged" />
-
 				<Label text="Distance" id="DistanceLabel" required="true" />
 				<mylib:SelectExt name="Distance"  id="Distance" 
-					selectedKey="{Distance}" enabled="false" />
+					selectedKey="{Distance}" />
 
 				<Label text="TshirtSize" id="TshirtSizeLabel" required="true" />
-				<mylib:SelectExt name="TshirtSize"  selectedKey="{TshirtSize}" id="TshirtSize" enabled="false" />
+				<mylib:SelectExt name="TshirtSize"  selectedKey="{TshirtSize}" id="TshirtSize" />
 
-				<Label text="Nationality" id="NationalityLabel" required="true" />
-				<mylib:SelectExt name="Nationality"  selectedKey="{Nationality}" id="Nationality" enabled="false"  />
+				 <Label text="Previous best time" />
+				 <VBox width="100%">
+                    <HBox> <Label text="Full Marathon" width="120px" /> 
+                    	   <Input value="{FullBestTime}" placeholder="hh:mm:ss, like 01:10:12" /> 
+                    </HBox>
+                       <HBox> <Label text="Half Marathon" width="120px" /> 
+                    	   <Input value="{HalfBestTime}" placeholder="hh:mm:ss, like 01:10:12" /> 
+                    </HBox>
+                       <HBox> <Label text="8.5K Fun Run" width="120px" /> 
+                    	   <Input value="{FunBestTime}" placeholder="hh:mm:ss, like 01:10:12" /> 
+                    </HBox>
+                </VBox>
 												
-				<Label text="Team" id="TeamLabel" required="true" />
-				<mylib:SelectExt name="Team" selectedKey="{Team}"  id="Team" enabled="false" />
+				<Label text="Department" id="DepartmentLabel" required="true" />
+				<mylib:SelectExt name="Department" selectedKey="{Department}"  id="Department" />
 
-				<Label text="Club" id="ClubLabel" required="true" />
-				<mylib:SelectExt name="Club" selectedKey="{Club}" id="Club" enabled="false" />
+				<Label text="Work Location" id="LocationLabel" required="true" />
+				<mylib:SelectExt name="Location" selectedKey="{Location}"  id="Location" />
+
+				<Label text="Club" id="ClubLabel" required="false" />
+				<mylib:SelectExt name="Club" selectedKey="{Club}" id="Club" />
 			</form:content>
 		</form:SimpleForm>
 <Panel headerText="Attachments" id="attachmentPanel">
@@ -65,7 +82,7 @@
 	<!-- text='{parts:[{path:"Id/FileName"}, {path:"Id/Type"}], formatter: ".fmtAttachmentLink" }' 
 	, formatter: ".fmtAttachmentSrc" mime="{Id/Mime}" -->
 	<Link href="{Id/src}" target="_blank"  
-		text="Identity Card Picture"
+		text="ID or Passport Picture"
 		emphasized="true"/>
 	<mylib:Attachment src='{Id/src}' id="idAttachment"
 	   />
@@ -76,6 +93,14 @@
 		text="Photo Picture"
 		emphasized="true"/>
 	<mylib:Attachment src="{Photo/src}"  id="photoAttachment"
+	   />
+</VBox>
+
+<VBox id="residenceAttachmentBox">
+	<Link href="{Residence/src}" target="_blank"  
+		text="Residence permit Information"
+		emphasized="true"/>
+	<mylib:Attachment src="{Residence/src}"  id="ResidenceAttachment"
 	   />
 </VBox>
 
@@ -92,6 +117,14 @@
 
 		 <footer>
             <Bar>
+            	<contentMiddle>
+            		<Button
+	                        text="Download Approved to Excel"
+	                        icon="sap-icon://download"
+	                        press="onDownloadExcelPressed">
+	                    </Button>
+            	</contentMiddle>
+
                 <contentRight>
                 	<Button
                         text="Delete"

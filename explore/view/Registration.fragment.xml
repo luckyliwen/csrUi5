@@ -5,7 +5,7 @@
  
     <table:Table id="registrationTable"
         visibleRowCount="30"  showColumnVisibilityMenu="true"
-        rows="{/Registrations}" selectionMode="MultiToggle"
+        selectionMode="MultiToggle"
         rowSelectionChange="onRegistrationTableRowSelectChanged">
         <table:columns>
             <table:Column id="UserId">
@@ -43,42 +43,7 @@
                     </Text>
                 </table:template>
             </table:Column>
-            <table:Column>
-                <table:label>
-                    <Label
-                        text="Gender">
-                    </Label>
-                </table:label>
-                <table:template>
-                    <Text
-                        text="{Gender}">
-                    </Text>
-                </table:template>
-            </table:Column>
-            <table:Column visible="false">
-                <table:label>
-                    <Label
-                        text="Email">
-                    </Label>
-                </table:label>
-                <table:template>
-                    <Text
-                        text="{Email}">
-                    </Text>
-                </table:template>
-            </table:Column>
-            <table:Column>
-                <table:label>
-                    <Label
-                        text="Phone">
-                    </Label>
-                </table:label>
-                <table:template>
-                    <Text
-                        text="{Phone}">
-                    </Text>
-                </table:template>
-            </table:Column>
+            
             <table:Column>
                 <table:label>
                     <Label
@@ -91,18 +56,47 @@
                     </Text>
                 </table:template>
             </table:Column>
-            <!-- <table:Column>
+
+            <table:Column>
                 <table:label>
                     <Label
-                        text="Birthday">
+                        text="Team">
                     </Label>
                 </table:label>
                 <table:template>
                     <Text
-                        text="{Birthday}">
+                        text="{path: 'TeamId', formatter: '.fmtTeam'}">
                     </Text>
                 </table:template>
-            </table:Column> -->
+            </table:Column>
+
+            <table:Column visible="true">
+                <table:label>
+                    <Label
+                        text="Email">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Email}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Phone">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Phone}">
+                    </Text>
+                </table:template>
+            </table:Column>
+           
+            
             <table:Column>
                 <table:label>
                     <Label
@@ -115,6 +109,7 @@
                     </Text>
                 </table:template>
             </table:Column>
+
             <table:Column>
                 <table:label>
                     <Label
@@ -129,32 +124,32 @@
                 </table:template>
             </table:Column>
 
-            
             <table:Column visible="true">
                 <table:label>
                     <Label
-                        text="Reason">
+                        text="Department">
                     </Label>
                 </table:label>
                 <table:template>
                     <Text
-                        text="{RejectReason}">
+                        text="{Department}">
                     </Text>
                 </table:template>
             </table:Column>
 
-            <table:Column visible="false">
+            <table:Column visible="true">
                 <table:label>
                     <Label
-                        text="Team">
+                        text="Location">
                     </Label>
                 </table:label>
                 <table:template>
                     <Text
-                        text="{Team}">
+                        text="{Location}">
                     </Text>
                 </table:template>
             </table:Column>
+
             <table:Column visible="false">
                 <table:label>
                     <Label

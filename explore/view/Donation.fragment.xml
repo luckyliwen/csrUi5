@@ -8,10 +8,14 @@
             <ToolbarSpacer>
             </ToolbarSpacer>
             <SegmentedButton >
-                <buttons>
+                <buttons> 
                     <Button
                         text="Overall"
                         id="overallSegment" press="onDonationSegmentSelected">
+                    </Button>
+                    <Button
+                        text="Amount by team" press="onDonationSegmentSelected"
+                        id="byTeamSegment">
                     </Button>
                     <Button
                         text="My Donations" press="onDonationSegmentSelected"
@@ -233,5 +237,64 @@
 
     </items>
 </HBox>
+
+
+<table:Table  visibleRowCount="30"  visible="false"
+        id="teamDonationTable"  rows="{/TeamDonation}"
+        >
+        <table:columns>
+
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Team ID">
+                    </Label>
+                </table:label>
+                <table:template>
+                      <mylib:UserLink 
+                        text="{TeamId}"/>
+                </table:template>
+            </table:Column>
+
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Team Name">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{path: 'TeamId', formatter: '.fmtTeam'}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
+             <table:Column  width="50%">
+                <table:label>
+                    <Label
+                        text="Members">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <mylib:Member
+                        nameList="{path: 'TeamId', formatter: '.fmtTeamMember'}">
+                    </mylib:Member>
+                </table:template>
+            </table:Column>
+
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Amount (Rmb)">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Amount}">
+                    </Text>
+                </table:template>
+            </table:Column>
+        </table:columns>
+    </table:Table>
 
 </core:FragmentDefinition>

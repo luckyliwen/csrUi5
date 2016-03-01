@@ -13,12 +13,13 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		BaseController.prototype.onInit.call(this);
 
 		gc = this; 
-
+		this.aTeam = [];
 		this.oDataModel = this.getModel();
 		this.oDataModel.setUseBatch(false);
 
 		this.oRegTable = this.byId('registrationTable');
 		this.oDonationTable = this.byId("donationTable");
+		this.oTeamDonationTable = this.byId("teamDonationTable");
 		this.oReceivedTable = this.byId("receivedDonationTable");
 		this.oGivingTable = this.byId("givingDonationTable");
 
@@ -26,6 +27,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		Util.setTableColumnsFilterSortProperty(this.oDonationTable);
 		Util.setTableColumnsFilterSortProperty(this.oReceivedTable);
 		Util.setTableColumnsFilterSortProperty(this.oGivingTable);
+		Util.setTableColumnsFilterSortProperty(this.oTeamDonationTable);
 
 		this.oVizBox = this.byId("vizBox");
 		this.oRegViz = this.byId("registrationViz");
@@ -35,12 +37,33 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		
 		this.oModel = new JSONModel(); 
 		this.oVizBox.setModel( this.oModel);
+		this.oTeamDonationTable.setModel(this.oModel);
 
 		this.mSta = {};
-		this.initVizPart();
-
-		this.initDonationPart();
+		this.loadTeamInfor();
 	},
+
+	loadTeamInfor: function( ) {
+	    var that = this;
+
+		function onGetTeamInfoSuccess( oData) {
+			that.aTeam = oData.results;
+			that.initDonationPart();
+			that.initVizPart();
+
+			that.oRegTable.bindRows("/Registrations");
+		}
+		
+	    function onGetTeamInfoError(error) {
+			Util.showError("Failed to get team information.", error);
+		}
+
+	    this.oDataModel.read("/Teams", {
+			success: onGetTeamInfoSuccess,
+			error: onGetTeamInfoError
+		});
+	},
+	
 
 	initDonationPart: function(  ) {
 		var that = this;
@@ -84,6 +107,10 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 			that.mSta  = JSON.parse(content);
 			that.oModel.setData( that.mSta);
 			// this.oRegViz.setModel(dataModel);
+			// 
+			var info = "Total amount: " + that.mSta.Donation.Total + " (rmb), donatation count: " 
+				+ that.mSta.Donation.Count + " (times)"; 
+			that.oDonationTable.setTitle(info);
 		}
         
 
@@ -211,10 +238,13 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	
 	onDonationSegmentSelected: function( evt ) {
 	    var id = evt.getSource().getId();
-	    var bOverall = id.indexOf('overall')!= -1;
+	    var bOverall = id.indexOf('overallSegment')!= -1;
+	    var bMyDonation = id.indexOf('mySegment')!= -1;
+	    var bTeam = id.indexOf('byTeamSegment')!= -1;
 
 	    this.oDonationTable.setVisible(bOverall);
-	    this.byId("myDonationBox").setVisible( !bOverall);	
+	    this.byId("myDonationBox").setVisible( bMyDonation);	
+	    this.oTeamDonationTable.setVisible(bTeam);
 	},
 	
 
@@ -228,7 +258,23 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	onRegistrationTableRowSelectChanged: function( evt ) {
 	    var selIdx = this.oRegTable.getSelectedIndices();
 	    this.byId("donateBtn").setEnabled( selIdx.length > 0 );
+	    this.byId("emailBtn").setEnabled( selIdx.length > 0 );
 	},
+
+	onSendEmailPressed: function( evt ) {
+		var selIdx = this.oRegTable.getSelectedIndices();
+		var list = "mailto:";
+		for (var i=0; i < selIdx.length; i++) {
+			var context = this.oRegTable.getContextByIndex( selIdx[i]);
+			var email = context.getProperty("Email");
+			if(i>0) {
+				list+=";"
+			}
+			list += email;
+		}
+		window.open(list);
+	},
+
 
 	onDonatePressed: function( evt ) {
 	    if (!this.oDonationDialog) {
@@ -330,7 +376,34 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		var that = this;
 		jQuery.sap.delayedCall(0, this, this.onDelayedRadioChangeFunc);
 	},
-	
+
+
+	fmtTeam: function( teamId) {
+	    if ( !teamId || teamId == "0") {
+	    	return "";
+	    }
+
+	    for (var i=0; i < this.aTeam.length; i++) {
+	    	var  team = this.aTeam[i];
+	    	if (teamId == team.TeamId)
+	    		return team.Name;
+	    }
+	    return "";
+	},
+
+	fmtTeamMember: function( teamId) {
+	    if ( teamId == null || teamId == undefined ) {
+	    	return "";
+	    }
+
+	    for (var i=0; i < this.aTeam.length; i++) {
+	    	var  team = this.aTeam[i];
+	    	if (teamId == team.TeamId)
+	    		return team.MemberList;
+	    }
+	    return "";
+	}
+
 });
 	
 	

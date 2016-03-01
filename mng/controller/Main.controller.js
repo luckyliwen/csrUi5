@@ -40,15 +40,38 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
     	this.oDataModel.attachRequestCompleted(this.onODataRequestCompleted, this);
 	},
 
+	onDownloadExcelPressed: function( evt ) {
+	    alert("Coming Soon!");
+	},
+	
+
+	onNormalVipSegmentSelected: function( evt ) {
+	    this.bindList();
+	},
+	
+
 	onODataRequestCompleted: function( oData ) {
 	    console.error(oData);
 	},
 	
-	bindList: function(  ) {
+	bindList: function( ) {
+		var aFilter = [new sap.ui.model.Filter("Status", 'EQ', 'Submitted')];
+		var key = this.byId("segmentBtn").getSelectedButton();
+		if (!key) 
+			key = "";
+
+		var bVip = (key.indexOf("vipSegment") != -1);
+
+		if (bVip) {
+			aFilter.push( new sap.ui.model.Filter("Vip", 'EQ', true));
+		} else {
+			aFilter.push( new sap.ui.model.Filter("Vip", 'EQ', false));
+		}
+
 	    this.oList.bindItems({
 	    	path: "/Registrations",
 	    	sorter: new sap.ui.model.Sorter("SubmittedTime"),
-	    	filters: new sap.ui.model.Filter("Status", 'EQ', 'Submitted'),
+	    	filters: aFilter,
 	    	template: this.oListItemTemplate,
 
 	    	/*events: {
@@ -102,7 +125,6 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	    	this.currentBindingpath = "";
 	    } else {
 	    	var binding = selItem.getBindingContext();
-	    	
 
 	    	this.getUploadedAttachmentInfo(binding);
 	    	this.currentUserId = binding.getProperty("UserId");
@@ -115,6 +137,11 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	getUploadedAttachmentInfo: function( binding ) {
 		var userId = binding.getProperty("UserId");
 		var bindPath = "/" + userId;
+
+		var nationality = binding.getProperty("Nationality");
+		var residenceFlag = (nationality != "Chinese"); 
+		this.byId("residenceAttachmentBox").setVisible(residenceFlag);
+
 		if ( userId in this.mAttachment) {
 			this.oPanel.bindElement(bindPath);
 			return ;

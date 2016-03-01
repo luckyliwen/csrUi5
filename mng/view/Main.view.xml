@@ -8,12 +8,29 @@
             <Page
                 title="Approve Marathon">
                 <content>
-                    <SearchField
+                   <!--  <SearchField
                         id="searchEvent"
                         search="onListSearchPressed"
                         liveChange="onListSearchLiveChanged">
-                    </SearchField>
+                    </SearchField> -->
                     <!-- , filters: [{path: 'Status', operator: 'eq', value1:'Submitted'}] -->
+                    <SegmentedButton  id="segmentBtn"
+                        width="100%"
+                        select="onNormalVipSegmentSelected">
+                        <buttons>
+                            <Button
+                                text="Normal"
+                                id="normalSegment"
+                                press="onNormalOrVipSegmentSelected">
+                            </Button>
+                            <Button
+                                text="VIP"
+                                id="vipSegment"
+                                press="onNormalOrVipSegmentSelected">
+                            </Button>
+                        </buttons>
+                    </SegmentedButton>
+
                     <List
                         id="registrationList"
                         noDataText="no registration"

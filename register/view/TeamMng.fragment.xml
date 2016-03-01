@@ -1,0 +1,115 @@
+<core:FragmentDefinition
+    xmlns="sap.m"  xmlns:mylib="csr.lib"
+    xmlns:table="sap.ui.table"  xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:core="sap.ui.core">
+
+    <Dialog
+        title="Team Management Dialog"   id="teamMngDialog"
+        contentWidth="1000px">
+        <content>
+            <Title
+                text="You can create a team then ask colleague to join"
+                titleStyle="H3">
+            </Title>
+            <HBox>
+                <items>
+                    <Label
+                        text="My Created Team Name ">   
+                    </Label>
+                     <html:div style="width:2rem" />
+                    <Input   width="300px"
+                        id="teamNameInput"  liveChange="onTeamNameChanged">
+                    </Input>
+                    <html:div style="width:2rem" />
+                    <Button  id="createTeamBtn"  visible="false"
+                        text="Create"   icon="sap-icon://create"   enabled="false"
+                        press="onCreateOrChangeTeamPressed">
+                    </Button>
+                    <html:div style="width:2rem" />
+                     <Button  id="changeTeamBtn"  visible="false"  enabled="false"
+                        text="Change Name"   
+                        press="onCreateOrChangeTeamPressed">
+                    </Button>
+                </items>
+            </HBox>
+            <Title  class="MarginTop MarginBottom1"
+                text="Or choose to join an existed team:  You must first create a registration"
+                titleStyle="H3">
+            </Title>
+
+            <table:Table
+                visibleRowCount="12"  selectionMode="Single"
+                rowSelectionChange="onTeamTableRowSelectChanged"
+                id="teamTable"
+                rows="{/Teams}">
+                <table:columns>
+                    <table:Column width="10%">
+                        <table:label>
+                            <Label
+                                text="Team ID">
+                            </Label>
+                        </table:label>
+                        <table:template>
+                            <Text
+                                text="{TeamId}">
+                            </Text>
+                        </table:template>
+                    </table:Column>
+                    <table:Column  width="30%"
+                        filterProperty="Name">
+                        <table:label>
+                            <Label
+                                text="Name">
+                            </Label>
+                        </table:label>
+                        <table:template>
+                            <Text
+                                text="{Name}">
+                            </Text>
+                        </table:template>
+                    </table:Column>
+                    <table:Column width="10%"
+                        filterProperty="OwnerId">
+                        <table:label>
+                            <Label
+                                text="Created By">
+                            </Label>
+                        </table:label>
+                        <table:template>
+                            <Text
+                                text="{OwnerId}">
+                            </Text>
+                        </table:template>
+                    </table:Column>
+                    <table:Column  width="50%">
+                        <table:label>
+                            <Label
+                                text="Members">
+                            </Label>
+                        </table:label>
+                        <table:template>
+                            <mylib:Member
+                                nameList="{MemberList}">
+                            </mylib:Member>
+                        </table:template>
+                    </table:Column>
+                </table:columns>
+            </table:Table>
+        </content>
+        <beginButton>
+            <Button
+                text="Request Join"  enabled="false"
+                id="requestJoinBtn"
+                type="Accept"
+                icon="sap-icon://collaborate"
+                press="onTeamRequestJoinPressed">
+            </Button>
+        </beginButton>
+        <endButton>
+            <Button
+                text="Close"  
+                press="onTeamMngCancelPressed">
+            </Button>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>
