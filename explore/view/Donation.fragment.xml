@@ -251,8 +251,7 @@
                     </Label>
                 </table:label>
                 <table:template>
-                      <mylib:UserLink 
-                        text="{TeamId}"/>
+                    <Text text="{TeamId}" />
                 </table:template>
             </table:Column>
 
