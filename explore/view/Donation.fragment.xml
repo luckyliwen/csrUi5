@@ -14,7 +14,7 @@
                         id="overallSegment" press="onDonationSegmentSelected">
                     </Button>
                     <Button
-                        text="Amount by team" press="onDonationSegmentSelected"
+                        text="Donation by team" press="onDonationSegmentSelected"
                         id="byTeamSegment">
                     </Button>
                     <Button
@@ -34,7 +34,7 @@
             <table:Column>
                 <table:label>
                     <Label
-                        text="Donator">
+                        text="Donor ID">
                     </Label>
                 </table:label>
                 <table:template>
@@ -45,7 +45,7 @@
             <table:Column>
                 <table:label>
                     <Label
-                        text="Donator Name">
+                        text="Donor Name">
                     </Label>
                 </table:label>
                 <table:template>
@@ -80,7 +80,7 @@
             <table:Column>
                 <table:label>
                     <Label
-                        text="Amount">
+                        text="Amount (RMB)">
                     </Label>
                 </table:label>
                 <table:template>
@@ -92,7 +92,7 @@
             <table:Column>
                 <table:label>
                     <Label
-                        text="Comment">
+                        text="Message">
                     </Label>
                 </table:label>
                 <table:template>
@@ -126,7 +126,7 @@
             <table:Column>
                 <table:label>
                     <Label
-                        text="Donator">
+                        text="Donor ID">
                     </Label>
                 </table:label>
                 <table:template>
@@ -137,7 +137,7 @@
             <table:Column>
                 <table:label>
                     <Label
-                        text="Donator Name">
+                        text="Donor Name">
                     </Label>
                 </table:label>
                 <table:template>
@@ -149,7 +149,7 @@
             <table:Column>
                 <table:label>
                     <Label
-                        text="Amount">
+                        text="Amount (RMB)">
                     </Label>
                 </table:label>
                 <table:template>
@@ -162,7 +162,7 @@
                 <table:Column>    
                 <table:label>
                     <Label
-                        text="Comment">
+                        text="Messge">
                     </Label>
                 </table:label>
                 <table:template>
@@ -209,7 +209,7 @@
             <table:Column>
                 <table:label>
                     <Label
-                        text="Amount">
+                        text="Amount (RMB)">
                     </Label>
                 </table:label>
                 <table:template>
@@ -222,7 +222,7 @@
             <table:Column>
                 <table:label>
                     <Label
-                        text="Comment">
+                        text="Message">
                     </Label>
                 </table:label>
                 <table:template>

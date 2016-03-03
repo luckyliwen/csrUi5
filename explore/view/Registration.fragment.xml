@@ -11,7 +11,7 @@
             <table:Column id="UserId">
                 <table:label>
                     <Label
-                        text="UserId">
+                        text="User ID">
                     </Label>
                 </table:label>
                 <table:template>
@@ -22,7 +22,7 @@
             <table:Column >
                 <table:label>
                     <Label
-                        text="LastName">
+                        text="Last Name">
                     </Label>
                 </table:label>
                 <table:template>
@@ -34,7 +34,7 @@
             <table:Column>
                 <table:label>
                     <Label
-                        text="FirstName">
+                        text="First Name">
                     </Label>
                 </table:label>
                 <table:template>

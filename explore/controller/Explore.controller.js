@@ -178,7 +178,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
                 },
                 title: {
                     visible: true,
-                    text: 'Top 10 Received Donations'
+                    text: 'Top 10 Most Valuable Runners '
                 }
         });
 
@@ -230,7 +230,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
                 },
                 title: {
                     visible: true,
-                    text: 'Top 10 Giving Donations'
+                    text: 'To 10 Donors'
                 }
         });
 	},
