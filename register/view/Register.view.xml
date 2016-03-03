@@ -28,8 +28,13 @@
 									<Label text="Runner Candidate Number" />
   									<Title titleStyle="H5" text="120  First Registering, Frist get!" />
 
-									<Label text="Detail information" textAlign="left" />
+									<Label text="Organization detail information" textAlign="left" />
 									<Link text="http://www.great-wall-marathon.com.cn/"  href="http://www.great-wall-marathon.com.cn/"/>
+
+									<Label text="SAP Jam Page Information" textAlign="left" />
+									<Link text="You Don’t Want to Miss This"  
+										href="https://jam4.sapjam.com/groups/3mAEh25cxRkckjYqVAQpcG/overview_page/71640"/>
+
 								</form:content>
 							</form:SimpleForm>
 							<form:SimpleForm id="registerForm" title="My Registration Information" editable="true" 
@@ -109,7 +114,7 @@
                     					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
 
 									<Label text="Photo" required="true" 
-										tooltip="Photo of headshot, used for create poster"/>
+										tooltip="Photo of headshot, used for create poster.  2M > size >300K "/>
                 					<mylib:FileUploaderExt  id="fileUploaderPhoto" width="400px" selectFile="onAttachmentSelectChanged"
                     					useMultipart="false"  sendXHR="true" fileName="{/FileNamePhoto}" 
                     					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>

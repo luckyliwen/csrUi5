@@ -46,7 +46,7 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	
 
 	onDownloadFormPressed: function( evt ) {
-	    window.open("https://csrodatap1941885273trial.hanatrial.ondemand.com/csrodata/Runner_Form.pdf", "_blank");
+	    window.open(Config.getConfigure().FormDownloadUrl, "_blank");
 	},
 
 	onManageTeamPressed: function( evt ) {
