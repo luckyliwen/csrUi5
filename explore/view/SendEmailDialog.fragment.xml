@@ -1,0 +1,29 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Dialog
+        title="Copy recipients address"
+        contentWidth="800px">
+        <content>
+            <Title
+                text="Because some browser blocked the Email (mailto ), so please manually copy the recipients address below:">
+            </Title>
+            <Title class="MarginTopBottom"
+                text="Press Ctrl+C  to copy, then paste to your Outlook">
+            </Title>
+            <TextArea
+                id="emailAddress"
+                rows="4"
+                wrapping="Soft"
+                width="95%">
+            </TextArea>
+        </content>
+        <endButton>
+            <Button
+                text="Close"
+                press="onSendEmailClosePressed">
+            </Button>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>
