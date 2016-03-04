@@ -7,6 +7,7 @@
         title="Team Management Dialog"   id="teamMngDialog"
         contentWidth="800px">
         <content>
+        <Panel>
             <Title
                 text="You can create a team then ask colleague to join"
                 titleStyle="H3">
@@ -95,6 +96,7 @@
                     </table:Column>
                 </table:columns>
             </table:Table>
+        </Panel>
         </content>
         <beginButton>
             <Button

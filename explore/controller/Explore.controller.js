@@ -261,19 +261,49 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	    this.byId("emailBtn").setEnabled( selIdx.length > 0 );
 	},
 
-	onSendEmailPressed: function( evt ) {
+	onSendEmailPressed_old:function( evt ) {
 		var selIdx = this.oRegTable.getSelectedIndices();
-		var list = "mailto:";
+		var url = "mailto:";
 		for (var i=0; i < selIdx.length; i++) {
 			var context = this.oRegTable.getContextByIndex( selIdx[i]);
 			var email = context.getProperty("Email");
 			if(i>0) {
-				list+=";"
+				url+=";"
 			}
-			list += email;
+			url += email;
 		}
-		window.open(list);
+		window.open(url, "_parent");
 	},
+
+	onSendEmailPressed : function( evt ) {
+		if (!this.oSendEmailDialog) {
+			this.oSendEmailDialog = sap.ui.xmlfragment(this.getView().getId(), "csr.explore.view.SendEmailDialog", this);
+		}
+
+		var selIdx = this.oRegTable.getSelectedIndices();
+		var url="";
+		for (var i=0; i < selIdx.length; i++) {
+			var context = this.oRegTable.getContextByIndex( selIdx[i]);
+			var email = context.getProperty("Email");
+			if(i>0) {
+				url+=";"
+			}
+			url += email;
+		}
+		this.byId("emailAddress").setValue(url);
+		this.oSendEmailDialog.open();
+
+		var that = this;
+		setTimeout(	function( evt ) {
+		    that.byId("emailAddress").selectText(0,  url.length);
+		}, 0);
+		
+	},
+
+	onSendEmailClosePressed: function( evt ) {
+	    this.oSendEmailDialog.close();
+	},
+	
 
 
 	onDonatePressed: function( evt ) {
