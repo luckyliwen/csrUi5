@@ -45,7 +45,7 @@
 			"path": "/uploadDownload",
 			"target": {
 				"type": "destination",
-				"name": "uploadDownload",
+				"name": "uploadDownload"
 			},
 			"description": "uploadDownload Srv"
 		},
