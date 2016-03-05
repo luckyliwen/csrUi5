@@ -42,13 +42,12 @@
 		},
 
 		{
-			"path": "/attachmentUploader",
+			"path": "/uploadDownload",
 			"target": {
 				"type": "destination",
-				"name": "attachmentUploader",
-				"entryPath": "/Attachment"
+				"name": "uploadDownload",
 			},
-			"description": "attachmentUploader Srv"
+			"description": "uploadDownload Srv"
 		},
 		{
 			"path": "/sap/ui5/1/resources/odata/CsrODataSrv",
@@ -61,13 +60,12 @@
 		},
 
 		{
-			"path": "/sap/ui5/1/resources/attachmentUploader",
+			"path": "/sap/ui5/1/resources/uploadDownload",
 			"target": {
 				"type": "destination",
-				"name": "attachmentUploader",
-				"entryPath": "/Attachment"
+				"name": "uploadDownload"
 			},
-			"description": "attachmentUploader Srv"
+			"description": "uploadDownload Srv"
 		}
 	],
 	"cacheControl": [{

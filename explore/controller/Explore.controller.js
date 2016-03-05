@@ -35,6 +35,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		this.oGivingViz = this.byId("givingViz");
 		
 		
+		this.userId = "";
 		this.oModel = new JSONModel(); 
 		this.oVizBox.setModel( this.oModel);
 		this.oTeamDonationTable.setModel(this.oModel);
@@ -69,7 +70,12 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		var that = this;
 
 		function onGetUserInfoSuccess( oData) {
-		    that.userId = oData.UserId;
+			if (!that.userId) {
+		    	that.userId = oData.UserId;
+			} else {
+				//just for fresh
+				that.oDonationTable.bindRows("/Donations");
+			}
 
 		    that.oReceivedTable.bindRows({
 		    	path: "/Donations", 
@@ -86,11 +92,16 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 			Util.showError("Failed to call GetUserInfo.", error);
 		}
 
-	    this.oDataModel.callFunction("/GetUserInfo", {
-			method: "GET",
-			success: onGetUserInfoSuccess,
-			error: onGetUserInfoError
-		});
+		if (!this.userId) {
+		    this.oDataModel.callFunction("/GetUserInfo", {
+				method: "GET",
+				success: onGetUserInfoSuccess,
+				error: onGetUserInfoError
+			});
+		} else {
+			//used for auto refresh
+			onGetUserInfoSuccess();
+		}
 
 	},
 
@@ -130,6 +141,9 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	},
 
 	setVizPartProp: function( evt ) {
+		if (this.bAlreadySetVizProp)
+			return;
+
 	    this.oRegViz.setVizProperties({
                 plotArea: {
                     dataLabel: {
@@ -233,6 +247,8 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
                     text: 'To 10 Donors'
                 }
         });
+
+        this.bAlreadySetVizProp = true;
 	},
 	
 	
@@ -252,6 +268,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	    var selKey = evt.getSource().getSelectedKey();
 	    var visible = (selKey == "Registrations");
 	    this.byId("donateBtn").setVisible( visible );
+	    this.byId("emailBtn").setVisible( visible );
 	},
 	
 
@@ -297,7 +314,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		setTimeout(	function( evt ) {
 		    that.byId("emailAddress").selectText(0,  url.length);
 		}, 0);
-		
+
 	},
 
 	onSendEmailClosePressed: function( evt ) {
@@ -336,7 +353,10 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	    var that = this;
 	    function onDonateSuccess() {
 	        that.getView().setBusy(false);
-	        Util.showToast("Donate successful!");
+	        Util.showToast("Donate successful! Information will be auto refresh...");
+
+	        that.initDonationPart();
+			that.initVizPart();
 	    }
 	    
 	    function onDonateError(error) {

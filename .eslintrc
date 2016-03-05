@@ -12,6 +12,8 @@
         "prompt" : false,
         "confirm": false,
         "window" : false,
+        "JSZip"  : false,
+        "saveAs": false,
         "loadXMLString": false,
         "OData":   false,
         "document" : false,

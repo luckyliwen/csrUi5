@@ -6,10 +6,11 @@
         title="Copy recipients address"
         contentWidth="800px">
         <content>
+        <Panel>
             <Title
                 text="Because some browser blocked the Email (mailto ), so please manually copy the recipients address below:">
             </Title>
-            <Title class="MarginTopBottom"
+            <Title class="MarginTop1 MarginBottom1"
                 text="Press Ctrl+C  to copy, then paste to your Outlook">
             </Title>
             <TextArea
@@ -18,6 +19,7 @@
                 wrapping="Soft"
                 width="95%">
             </TextArea>
+        </Panel>
         </content>
         <endButton>
             <Button

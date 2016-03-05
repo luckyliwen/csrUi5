@@ -3,7 +3,7 @@ sap.ui.define([
 	"csr/lib/BaseController",
 	"csr/lib/Enum",
 	"csr/lib/Config",
-	"csr/lib/Util",
+	"csr/lib/Util"
 ], function(BaseController, Enum, Config, Util) {
 	"use strict";
 
@@ -19,8 +19,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 
 		this.oList = this.byId('registrationList');
 		this.oPage = this.byId("detailPage");
-		this.oForm = this.byId('detailForm');
-		this.oPanel = this.byId('attachmentPanel');
+		this.oForm = this.byId('detailForm');		this.oPanel = this.byId('attachmentPanel');
 		this.currentUserId = "";
 		this.currentBindingpath = "";
 
@@ -39,11 +38,6 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 
     	this.oDataModel.attachRequestCompleted(this.onODataRequestCompleted, this);
 	},
-
-	onDownloadExcelPressed: function( evt ) {
-	    alert("Coming Soon!");
-	},
-	
 
 	onNormalVipSegmentSelected: function( evt ) {
 	    this.bindList();
@@ -296,6 +290,155 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	    }
 	},
 	
+	onDownloadExcelPressed: function( evt ) {
+		var content="Surname,Firstname,Title,Age,Distance,BestTime1M,BestTime1/2M,BestTime8.5K,T-Shirt,EMail,Nationality,Phone,Club\r\n";
+		var aKey = [
+			"RegLastName", "RegFirstName", "Title", "Age", "Distance", "FullBestTime", "HalfBestTime", "FunBestTime",
+			 "TshirtSize", "Email", "Nationality", "Phone", "Club" ];
+		var that = this;
+
+ 		function onGetApprovedRunnerSuccess(oData) {
+	        that.getView().setBusy(false);
+
+	        for (var i=0; i < oData.results.length; i++) {
+	        	var item = oData.results[i];
+
+	        	for (var idx =0; idx < aKey.length; idx++) {
+	        		var key = aKey[idx];
+	        		var val = item[key];
+	        		if (idx >0) {
+	        			content +=",";
+	        		}
+	        		if (val) {
+	        			content += val;
+	        		}
+	        	}
+	        	content += "\r\n";
+	        }
+	    	Util.saveToFile(content, "ApprovedRunner.csv");
+	    }
+	    
+	    function onGetApprovedRunnerError(error) {
+			Util.showError("Get all approved runner failed. Reason: " + error);
+	    }
+
+	    this.oDataModel.read("/Registrations", {
+	    	filters: [new sap.ui.model.Filter("Status", 'EQ', "Approved")],
+	    	success: onGetApprovedRunnerSuccess, 
+	    	error:   onGetApprovedRunnerError
+	    });
+
+	    this.getView().setBusy(true);
+	},
+	
+	onDownloadAttachmentPressed: function( evt ) {
+		var that = this;
+		function onGetApprovedRunnerSuccess(oData) {
+	        that.oDownloadTable.setBusy(false);
+
+	        var aData = [];
+	        var iBlock = 1;
+	        var block = 10;
+	        var entry;
+
+	        for (var i=0; i < oData.results.length; i++) {
+	        	//one block 10 files 
+	        	if ((i % block) == 0) {
+	        		entry = {
+	        			Seq: iBlock + " ~~ " + block * iBlock,
+	        			Name: "",
+	        			UserIds: "",
+	        			FileName: iBlock + "-" + block * iBlock +".zip",
+	        		};
+	        		iBlock++;
+	        		aData.push(entry);
+	        	}
+	        	
+	        	var item = oData.results[i];
+	        	if (entry.Name)
+	        		entry.Name +="; ";
+	        	entry.Name += item.LastName + "," + item.FirstName;
+
+	        	if (entry.UserIds)
+	        		entry.UserIds += ",";
+	        	entry.UserIds += item.UserId;
+	        }
+
+	        var oModel = new sap.ui.model.json.JSONModel(aData);
+    		that.oDownloadTable.setModel(oModel);
+	    }
+	    
+	    function onGetApprovedRunnerError(error) {
+	    	that.oDownloadTable.setBusy(false);
+			Util.showError("Get all approved runner failed. Reason: " + error);
+	    }
+
+	    
+		if (!this.oDownloadDialog) {
+			this.oDownloadDialog = sap.ui.xmlfragment(this.getView().getId(), "csr.mng.view.DownloadDialog", this);
+			this.oDownloadTable  = this.byId("downloadTable");
+		}
+
+		this.oDataModel.read("/Registrations", {
+	    	filters: [new sap.ui.model.Filter("Status", 'EQ', "Approved")],
+	    	sorter: new sap.ui.model.Sorter("SubmittedToDownloadDialogime"),
+	    	success: onGetApprovedRunnerSuccess, 
+	    	error:   onGetApprovedRunnerError
+	    });
+
+	    this.oDownloadTable.setBusy(true);
+
+		this.oDownloadDialog.open();
+	},
+
+	onDownloadIconPressed: function( evt ) {
+		var context = evt.getSource().getBindingContext();
+		var data = context.getProperty();
+		var url =  Config.getConfigure().ZipDownloadUrl;
+		url +="?UserIds=" + data.UserIds + "&FileName=" + data.FileName;
+
+		window.open(url);
+	},
+	
+
+	onCloseDownloadDialogPressed: function( evt ) {
+	    this.oDownloadDialog.close();
+	},
+	
+
+	saveAsZipFile: function( evt ) {
+		var url = "http://localhost:8524/csrodata/Attachment?UserId=I068108&Type=Form";
+	        $.ajax({
+  			url: url,
+  			type: "GET",
+  			dataType: "binary",
+  			processData: false,
+  			success: function(result){
+	  			// var zip = new JSZip();
+	  			// zip.file("test.pdf", result);
+	  			// var zipContent = zip.generate({type:"blob"});		
+	  			// saveAs(zipContent, "test.zip");
+	  			saveAs(result, "a.pdf");
+  			},
+
+  			error: function( evt ) {
+  				var zip = new JSZip();
+	  			zip.file("test.pdf", arguments[0].responseText);
+	  			var zipContent = zip.generate({type:"blob"});		
+	  			saveAs(zipContent, "test2.zip");
+  			    
+  			}
+		});
+	        /*var zip = new JSZip();
+        // for (var i=0; i < this.aFile.length; i++) {
+            // var file  = this.aFile[i];
+            zip.file("test.txt", "abce");
+        // }
+        var zipContent = zip.generate({type:"blob"});
+
+        // see FileSaver.js
+        saveAs(zipContent, "test.zip");*/
+	    },
 
 });
 

@@ -114,15 +114,20 @@
 
 </l:Grid>
 </Panel>
-
-		 <footer>
-            <Bar>
+		 <footer>  
+            <Bar id="footerBar">
             	<contentMiddle>
             		<Button
 	                        text="Download Approved to Excel"
 	                        icon="sap-icon://download"
 	                        press="onDownloadExcelPressed">
-	                    </Button>
+	                </Button>
+
+	                <Button
+	                        text="Download Approved Attachments"
+	                        icon="sap-icon://download"
+	                        press="onDownloadAttachmentPressed">
+	                </Button>
             	</contentMiddle>
 
                 <contentRight>
