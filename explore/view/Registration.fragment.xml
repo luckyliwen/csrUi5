@@ -11,8 +11,12 @@
          <table:toolbar>
             <Toolbar>
                 <content>
+                    <core:Icon
+                        src="sap-icon://question-mark">
+                    </core:Icon>
                     <Title
-                        text="Registration Information: click table header to search or sort">
+                        level="H2"
+                        text="Tips: Choose row(s) and press 'Donate' button on the footer to donate">
                     </Title>
                     <ToolbarSpacer />
                     <Button

@@ -1,7 +1,7 @@
 <core:View
     controllerName="csr.explore.controller.Explore"
     xmlns="sap.m"
-    xmlns:core="sap.ui.core">
+    xmlns:core="sap.ui.core" class="sapUiSizeCompact">
 <App>
 <pages>
     <Page   title="2016 SAP Great Wall Marathon"
@@ -53,7 +53,7 @@
                     </Button>
 
                     <Button  id="donateBtn"  enabled="false"
-                        text="Donate (choose rows to donate)"
+                        text="Donate"
                         icon="sap-icon://simple-payment"
                         type="Emphasized"
                         press="onDonatePressed">

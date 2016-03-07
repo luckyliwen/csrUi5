@@ -33,7 +33,7 @@
          <table:toolbar>
             <Toolbar>
                 <content>
-                    <Title id="doationTableTitle" />
+                    <Title text="Overall Donations" id="doationTableTitle" />
                     <ToolbarSpacer />
                     <Button
                         id="ExportBtn-donationTable"
