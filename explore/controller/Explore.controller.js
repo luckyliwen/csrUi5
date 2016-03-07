@@ -121,7 +121,8 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 			// 
 			var info = "Total amount: " + that.mSta.Donation.Total + " (rmb), donatation count: " 
 				+ that.mSta.Donation.Count + " (times)"; 
-			that.oDonationTable.setTitle(info);
+			// that.oDonationTable.setTitle(info);
+			that.byId("doationTableTitle").setText(info);
 		}
         
 
@@ -192,33 +193,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
                 },
                 title: {
                     visible: true,
-                    text: 'Top 10 Most Valuable Runners '
-                }
-        });
-
-        this.oRegViz.setVizProperties({
-                plotArea: {
-                    dataLabel: {
-                        // formatString:CustomerFormat.FIORI_LABEL_SHORTFORMAT_2,
-                        visible: true
-                    }
-                },
-                valueAxis: {
-                    // label: {
-                    //     formatString: CustomerFormat.FIORI_LABEL_SHORTFORMAT_10
-                    // },
-                    title: {
-                        visible: true
-                    }
-                },
-                categoryAxis: {
-                    title: {
-                        visible: true
-                    }
-                },
-                title: {
-                    visible: true,
-                    text: 'Registratration count by status'
+                    text: 'Top 10 Most Valuable Runners'
                 }
         });
 
@@ -285,7 +260,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 			var context = this.oRegTable.getContextByIndex( selIdx[i]);
 			var email = context.getProperty("Email");
 			if(i>0) {
-				url+=";"
+				url+=";" ;
 			}
 			url += email;
 		}
@@ -303,7 +278,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 			var context = this.oRegTable.getContextByIndex( selIdx[i]);
 			var email = context.getProperty("Email");
 			if(i>0) {
-				url+=";"
+				url+=";" ;
 			}
 			url += email;
 		}
@@ -361,7 +336,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	    
 	    function onDonateError(error) {
 			that.getView().setBusy(false);
-			Util.showError("Donate failed. Reason: " + error);
+			Util.showError("Donate failed." , error);
 	    }
 
 	    var amount;
@@ -452,12 +427,80 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	    		return team.MemberList;
 	    }
 	    return "";
+	},
+
+	_exportTeamDonationTable() {
+		// "TeamDonation\":[{\"TeamId\":1,\"Amount\":4100},{\"TeamId\":0,\"Amount\":2600}],\"Donation\":{ \"Total\":\"6700\",\"Count\":\"17\"}}"}}
+ 		var ret = ["Team ID, Team Name, Members, Amount(RMB)"]; 
+
+	    for (var i=0; i < this.mSta.TeamDonation.length; i++) {
+	    	var  item = this.mSta.TeamDonation[i];
+	    	var teamId = item.TeamId;
+	    	var teamName = this.fmtTeam(teamId);
+
+			//to avoid , conflict, add "" to 
+  			var vMember = '"' + this.fmtTeamMember(teamId) + '"';
+
+	    // 	//member like:  I068108:Lucky,li;Ixx; 
+	    // 	var sMember = this.fmtTeamMember(teamId);
+  			// var aMember = aMember.split(";");
+  			// for (var idx =0; idx< aMember.length; idx++) {
+  			// 	var member = aMember[idx];
+  			// 	//like I068108:Lucky,li;
+  			// 	vMember+=	
+  			// }
+
+  			
+	    	ret.push( teamId + "," + teamName + "," + vMember + "," + item.Amount);
+	    }
+	    var content = ret.join("\r\n");
+	    Util.saveToFile(content, "TeamDonation.csv");
+	},
+
+	onTableExportPressed: function( evt ) {
+		var source = evt.getSource();
+		var id = source.getId();
+		 // id="ExportBtn-teamDonationTable"
+		var pos = id.lastIndexOf("-");
+		var tableId = id.substr(pos+1);
+		if (tableId == "teamDonationTable") {
+			this._exportTeamDonationTable();
+			return;
+		}
+
+		var table = this.byId(tableId);
+	    Util.exportTableContent(table, tableId+".csv");
+	},
+
+	onStatisticsExportPressed: function( evt ) {
+	    var ret = ["Registration"];
+	    ret.push("Status,Count"); 
+	    for (var i=0; i < this.mSta.Registration.length; i++) {
+	    	var  item = this.mSta.Registration[i];
+	    	ret.push( item.Status + "," + item.Count);
+	    }
+
+	    //then the giving
+	    ret.push("");
+	    ret.push("To 10 Donors");
+	    ret.push("User,Amount"); 
+	    for ( i=0; i < this.mSta.Giving.length; i++) {
+	    	item = this.mSta.Giving[i];
+			ret.push( item.User + "," + item.Amount);
+	    }
+
+		//then the recv
+	    ret.push("");
+	    ret.push("Top 10 Most Valuable Runners");
+	    ret.push("User,Amount"); 
+	    for ( i=0; i < this.mSta.Received.length; i++) {
+	    	item = this.mSta.Received[i];
+			ret.push( item.User + "," + item.Amount);
+	    }
+	    var content = ret.join("\r\n");
+	    Util.saveToFile(content, "Statistics.csv");
 	}
-
 });
-	
-	
-
 	//global data 
 	// mRegister:  //the register information
 	//oFooterBar	

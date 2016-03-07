@@ -117,14 +117,20 @@
 		 <footer>  
             <Bar id="footerBar">
             	<contentMiddle>
-            		<Button
-	                        text="Download Approved to Excel"
+            		<Button tooltip="修改项目设置：VIP列表"
+	                        text="Setting"
+	                        icon="sap-icon://settings"
+	                        press="onSettingPressed">
+	                </Button>
+
+            		<Button tooltip="下载官方报名报个"
+	                        text="Download From"
 	                        icon="sap-icon://download"
 	                        press="onDownloadExcelPressed">
 	                </Button>
 
-	                <Button
-	                        text="Download Approved Attachments"
+	                <Button  tooltip="下载附件"
+	                        text="Download Attachments"
 	                        icon="sap-icon://download"
 	                        press="onDownloadAttachmentPressed">
 	                </Button>

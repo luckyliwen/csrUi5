@@ -8,7 +8,7 @@
         <content>
         <Panel>
             <Title
-                text="Because some browser blocked the Email (mailto ), so please manually copy the recipients address below:">
+                text="Because some browser blocked the Email, so please manually copy the recipients address below:">
             </Title>
             <Title class="MarginTop1 MarginBottom1"
                 text="Press Ctrl+C  to copy, then paste to your Outlook">

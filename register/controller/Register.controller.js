@@ -578,7 +578,7 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	},
 
 	onActionError: function( error, oldAction) {
-	    Util.showError(oldAction + " failed. Reason: " + error);
+	    Util.showError(oldAction + " failed." + error);
 	},
 	
 	

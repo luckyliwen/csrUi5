@@ -191,7 +191,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	    
 	    function onDeleteError(error) {
 			that.getView().setBusy(false);
-			Util.showError("Delete registration failed. Reason: " + error);
+			Util.showError("Delete registration failed." ,error);
 	    }
 
 	    this.oDataModel.remove(this.currentBindingpath, {
@@ -257,7 +257,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	    function onApproveRejectError(error) {
 			that.getView().setBusy(false);
 			var action = bApprove ? "Approve" : "Reject";
-			Util.showError(action + " failed. Reason: " + error);
+			Util.showError(action + " failed.", error);
 	    }
 
 	    this.oDataModel.update(this.currentBindingpath, mData, {
@@ -319,7 +319,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	    }
 	    
 	    function onGetApprovedRunnerError(error) {
-			Util.showError("Get all approved runner failed. Reason: " + error);
+			Util.showError("Get all approved runner failed.",error);
 	    }
 
 	    this.oDataModel.read("/Registrations", {
@@ -370,7 +370,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	    
 	    function onGetApprovedRunnerError(error) {
 	    	that.oDownloadTable.setBusy(false);
-			Util.showError("Get all approved runner failed. Reason: " + error);
+			Util.showError("Get all approved runner failed.",error);
 	    }
 
 	    
@@ -438,8 +438,70 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 
         // see FileSaver.js
         saveAs(zipContent, "test.zip");*/
-	    },
+	},
 
+    onSettingPressed: function( evt ) {
+        if (!this.oSettingDialog) {
+			this.oSettingDialog = sap.ui.xmlfragment(this.getView().getId(), "csr.mng.view.SettingDialog", this);
+			this.byId("projectForm").bindElement("/Projects('marathon2016')");
+			this.getView().addDependent( this.oSettingDialog);
+		}
+		this.oSettingDialog.open();
+    },
+
+	onSettingInputChanged: function( evt ) {
+	    var ids=["MaxRegisterNum",   "FreeVipNum",  "VipIds"];
+	    var flag = true;
+	    for (var i=0; i < ids.length; i++) {
+	    	var id = ids[i];
+	    	var val = this.byId(id).getValue().trim();
+	    	if (!val) {
+	    		flag = false;
+	    		break;
+	    	}
+	    }
+	    this.byId('settingOkBtn').setEnabled(flag);
+	},
+	
+
+    onSettingOkPressed: function( evt ) {
+    	var ids=["MaxRegisterNum",   "FreeVipNum",  "VipIds"];
+    	var mData = {};
+    	for (var i=0; i < ids.length; i++) {
+	    	var id = ids[i];
+	    	var val = this.byId(id).getValue().trim();
+	    	if (id.indexOf("Num") != -1 ) {
+	    		val = parseInt(val);
+	    	}
+	    	mData[id] = val;
+	    }
+
+	    var that = this;
+	    function onUpdateProjectSuccess() {
+	        // that.getView().setBusy(false);
+	    	that.oSettingDialog.close();
+	        Util.showToast("Update project setting successful!");
+	    }
+	    
+	    function onUpdateProjectError(error) {
+	    	// that.oSettingDialog.setBusy(false);
+	    	that.oSettingDialog.close();
+
+			Util.showError("Update project setting failed.",error);
+	    }
+
+	    this.oDataModel.update("/Projects('marathon2016')", mData, {
+	    	success: onUpdateProjectSuccess, 
+	    	error:   onUpdateProjectError,
+	    });
+		// this.oSettingDialog.setBusy(true);
+    },
+    
+
+    onSettingCancelPressed: function( evt ) {
+        this.oSettingDialog.close();
+    },
+    
 });
 
 	//global data 

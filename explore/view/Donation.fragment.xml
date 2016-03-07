@@ -30,6 +30,19 @@
     <table:Table  visibleRowCount="30"
         id="donationTable"
         rows="{/Donations}">
+         <table:toolbar>
+            <Toolbar>
+                <content>
+                    <Title id="doationTableTitle" />
+                    <ToolbarSpacer />
+                    <Button
+                        id="ExportBtn-donationTable"
+                        icon="sap-icon://excel-attachment"
+                        press="onTableExportPressed">
+                    </Button>
+                </content>
+            </Toolbar>
+        </table:toolbar>
         <table:columns>
             <table:Column>
                 <table:label>
@@ -119,9 +132,26 @@
 
 <HBox id="myDonationBox"  visible="false">
         <items>
-    <table:Table  title="My Received Donations"
+    <table:Table  
         id="receivedDonationTable"  visibleRowCount="25"
         rows="{/Donations}">
+
+         <table:toolbar>
+            <Toolbar>
+                <content>
+                    <Title
+                        text="My Received Donations">
+                    </Title>
+                    <ToolbarSpacer />
+                    <Button
+                        id="ExportBtn-receivedDonationTable"
+                        icon="sap-icon://excel-attachment"
+                        press="onTableExportPressed">
+                    </Button>
+                </content>
+            </Toolbar>
+        </table:toolbar>
+
         <table:columns>
             <table:Column>
                 <table:label>
@@ -176,9 +206,24 @@
     </table:Table>
 
 <html:div style="width:2rem" /> 
-<table:Table  title="My Giving Donations"
+<table:Table 
         id="givingDonationTable"  visibleRowCount="25"
         >
+         <table:toolbar>
+            <Toolbar>
+                <content>
+                    <Title
+                        text="My Giving Donations">
+                    </Title>
+                    <ToolbarSpacer />
+                    <Button
+                        id="ExportBtn-givingDonationTable"
+                        icon="sap-icon://excel-attachment"
+                        press="onTableExportPressed">
+                    </Button>
+                </content>
+            </Toolbar>
+        </table:toolbar>
         <table:columns>
            
            <table:Column>
@@ -242,6 +287,21 @@
 <table:Table  visibleRowCount="30"  visible="false"
         id="teamDonationTable"  rows="{/TeamDonation}"
         >
+         <table:toolbar>
+            <Toolbar>
+                <content>
+                    <Title
+                        text="Donations by Team">
+                    </Title>
+                    <ToolbarSpacer />
+                    <Button
+                        id="ExportBtn-teamDonationTable"
+                        icon="sap-icon://excel-attachment"
+                        press="onTableExportPressed">
+                    </Button>
+                </content>
+            </Toolbar>
+        </table:toolbar>
         <table:columns>
 
             <table:Column>

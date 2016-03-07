@@ -7,6 +7,23 @@
         visibleRowCount="30"  showColumnVisibilityMenu="true"
         selectionMode="MultiToggle"
         rowSelectionChange="onRegistrationTableRowSelectChanged">
+
+         <table:toolbar>
+            <Toolbar>
+                <content>
+                    <Title
+                        text="Registration Information: click table header to search or sort">
+                    </Title>
+                    <ToolbarSpacer />
+                    <Button
+                        id="ExportBtn-registrationTable"
+                        icon="sap-icon://excel-attachment"
+                        press="onTableExportPressed">
+                    </Button>
+                </content>
+            </Toolbar>
+        </table:toolbar>
+
         <table:columns>
             <table:Column id="UserId">
                 <table:label>

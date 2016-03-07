@@ -5,6 +5,17 @@
     xmlns:mvc="sap.ui.core.mvc" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
     xmlns:viz.data="sap.viz.ui5.data" height="100%">
 <VBox id="vizBox" width="100%">
+     <Toolbar>
+                <content>
+                    <ToolbarSpacer />
+                    <Button
+                        id="ExportBtn-statistics"
+                        icon="sap-icon://excel-attachment"
+                        press="onStatisticsExportPressed">
+                    </Button>
+                </content>
+            </Toolbar>
+
     <!-- <Panel headerText="Registration Information"> -->
          <viz:VizFrame id="registrationViz" uiConfig="{applicationSet:'fiori'}"
                          height='250px' width="100%" vizType='column'>
