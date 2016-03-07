@@ -124,7 +124,7 @@
 	                </Button>
 
             		<Button tooltip="下载官方报名报个"
-	                        text="Download From"
+	                        text="Download Form"
 	                        icon="sap-icon://download"
 	                        press="onDownloadExcelPressed">
 	                </Button>
