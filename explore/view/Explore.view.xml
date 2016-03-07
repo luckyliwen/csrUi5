@@ -45,19 +45,9 @@
         <footer>
             <Bar>
                 <contentRight>
-                    <Button  id="emailBtn"  enabled="false"  
-                        text="Send Email"
-                        icon="sap-icon://email"
-                        type="Emphasized"
-                        press="onSendEmailPressed">
-                    </Button>
+                    
 
-                    <Button  id="donateBtn"  enabled="false"
-                        text="Donate"
-                        icon="sap-icon://simple-payment"
-                        type="Emphasized"
-                        press="onDonatePressed">
-                    </Button>
+                    
                 </contentRight>
             </Bar>
         </footer>
