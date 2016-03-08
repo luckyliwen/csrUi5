@@ -18,7 +18,7 @@
 
     <!-- <Panel headerText="Registration Information"> -->
          <viz:VizFrame id="registrationViz" uiConfig="{applicationSet:'fiori'}"
-                         height='250px' width="100%" vizType='column'>
+                         height='100px' width="100%" vizType='column'>
                 <viz:dataset>
                     <viz.data:FlattenedDataset data="{/Registration}">
                         <viz.data:dimensions>
@@ -39,6 +39,30 @@
                         values="Status" />
                 </viz:feeds>
             </viz:VizFrame>
+
+          <viz:VizFrame id="donationByDateViz" uiConfig="{applicationSet:'fiori'}"
+                         height='250px' width="100%" vizType='column'>
+                <viz:dataset>
+                    <viz.data:FlattenedDataset data="{/DonationByDate}">
+                        <viz.data:dimensions>
+                            <viz.data:DimensionDefinition name="Date"
+                                value="{Date}" />
+                        </viz.data:dimensions>
+                        <viz.data:measures>
+                            <viz.data:MeasureDefinition name="Amount"
+                                value="{Amount}" />
+                        </viz.data:measures>
+                    </viz.data:FlattenedDataset>
+                </viz:dataset>
+
+                <viz:feeds>
+                    <viz.feeds:FeedItem  uid="valueAxis" type="Measure"
+                        values="Amount" />
+                    <viz.feeds:FeedItem uid="categoryAxis" type="Dimension"
+                        values="Date" />
+                </viz:feeds>
+            </viz:VizFrame>
+               
     <!-- </Panel> -->
     <!-- <Panel headerText="Donation Information"> -->
             <HBox width="100%">

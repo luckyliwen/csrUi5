@@ -17,6 +17,10 @@
                         text="Donation by team" press="onDonationSegmentSelected"
                         id="byTeamSegment">
                     </Button>
+                     <Button
+                        text="By Donor and Runner" press="onDonationSegmentSelected"
+                        id="byPeopleSegment">
+                    </Button>
                     <Button
                         text="My Donations" press="onDonationSegmentSelected"
                         id="mySegment">
@@ -102,18 +106,7 @@
                     </Text>
                 </table:template>
             </table:Column>
-            <table:Column>
-                <table:label>
-                    <Label
-                        text="Message">
-                    </Label>
-                </table:label>
-                <table:template>
-                    <Text
-                        text="{Comment}">
-                    </Text>
-                </table:template>
-            </table:Column>
+           
 
             <table:Column>
                 <table:label>
@@ -284,8 +277,137 @@
 </HBox>
 
 
-<table:Table  visibleRowCount="30"  visible="false"
-        id="teamDonationTable"  rows="{/TeamDonation}"
+
+<HBox id="personDonationBox"  visible="false">
+        <items>
+    <table:Table  
+        id="donnorDonationTable"  visibleRowCount="25"
+        rows="{/GivingAll}">
+
+         <table:toolbar>
+            <Toolbar>
+                <content>
+                    <Title
+                        text="Donations giving by Donnor">
+                    </Title>
+                    <ToolbarSpacer />
+                    <Button
+                        id="ExportBtn-donnorDonationTable"
+                        icon="sap-icon://excel-attachment"
+                        press="onTableExportPressed">
+                    </Button>
+                </content>
+            </Toolbar>
+        </table:toolbar>
+
+        <table:columns>
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Donor ID">
+                    </Label>
+                </table:label>
+                <table:template>
+                     <mylib:UserLink 
+                        text="{User}" href="{path: 'User', formatter: '.fmtUserHref'}" />
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Donnor Name">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Name}">
+                    </Text>
+                </table:template>
+            </table:Column>
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Amount (RMB)">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Amount}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
+        </table:columns>
+    </table:Table>
+
+<html:div style="width:2rem" /> 
+<table:Table  rows="{/ReceivedAll}"
+        id="byRunnerTable"  visibleRowCount="25"
+        >
+         <table:toolbar>
+            <Toolbar>
+                <content>
+                    <Title
+                        text="Donations received by Runner">
+                    </Title>
+                    <ToolbarSpacer />
+                    <Button
+                        id="ExportBtn-byRunnerTable"
+                        icon="sap-icon://excel-attachment"
+                        press="onTableExportPressed">
+                    </Button>
+                </content>
+            </Toolbar>
+        </table:toolbar>
+        <table:columns>
+           
+           <table:Column>
+                <table:label>
+                    <Label
+                        text="Runner">
+                    </Label>
+                </table:label>
+                <table:template>
+                     <mylib:UserLink 
+                        text="{User}" href="{path: 'User', formatter: '.fmtUserHref'}" />
+                </table:template>
+            </table:Column>
+
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Runner Name">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Name}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
+            <table:Column>
+                <table:label>
+                    <Label
+                        text="Amount (RMB)">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{Amount}">
+                    </Text>
+                </table:template>
+            </table:Column>
+          
+
+        </table:columns>
+    </table:Table>
+
+    </items>
+</HBox>
+
+<table:Table  visibleRowCount="30"  id="teamDonationTable" 
+        visible="false"  rows="{/TeamDonation}"
         >
          <table:toolbar>
             <Toolbar>

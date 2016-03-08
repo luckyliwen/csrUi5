@@ -11,9 +11,9 @@
          <table:toolbar>
             <Toolbar>
                 <content>
-                    <core:Icon
+                   <!--  <core:Icon
                         src="sap-icon://question-mark">
-                    </core:Icon>
+                    </core:Icon> -->
                     <Title
                         level="H2"
                         text="Tips: Choose row(s) and press 'Donate' button to donate">
@@ -25,7 +25,6 @@
                         type="Emphasized"
                         press="onDonatePressed">
                     </Button>
-                    <ToolbarSpacer />
                     <Button  id="emailBtn"  enabled="false"  
                         text="Send Email"
                         icon="sap-icon://email"

@@ -22,6 +22,8 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		this.oTeamDonationTable = this.byId("teamDonationTable");
 		this.oReceivedTable = this.byId("receivedDonationTable");
 		this.oGivingTable = this.byId("givingDonationTable");
+		this.oDonnorTable = this.byId("donnorDonationTable");
+		this.oRunnerTable = this.byId("byRunnerTable");
 
 		Util.setTableColumnsFilterSortProperty(this.oRegTable);
 		Util.setTableColumnsFilterSortProperty(this.oDonationTable);
@@ -31,6 +33,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 
 		this.oVizBox = this.byId("vizBox");
 		this.oRegViz = this.byId("registrationViz");
+		this.oDonationByDateViz = this.byId("donationByDateViz");
 		this.oReceivedViz = this.byId("receivedViz");
 		this.oGivingViz = this.byId("givingViz");
 		
@@ -38,7 +41,10 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		this.userId = "";
 		this.oModel = new JSONModel(); 
 		this.oVizBox.setModel( this.oModel);
+		this.oDonnorTable.setModel(this.oModel);
 		this.oTeamDonationTable.setModel(this.oModel);
+		this.oRunnerTable.setModel(this.oModel);	
+		
 
 		this.mSta = {};
 		this.loadTeamInfor();
@@ -171,6 +177,30 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
                 }
         });
 
+ 		this.oDonationByDateViz.setVizProperties({
+                plotArea: {
+                    dataLabel: {
+                        visible: true
+                    }
+                },
+                valueAxis: {
+                    title: {
+                        visible: true
+                    }
+                },
+                categoryAxis: {
+                    title: {
+                        visible: true
+                    }
+                },
+                title: {
+                    visible: true,
+                    text: 'Donation summary by Date'
+                }
+        });
+
+        
+
         this.oReceivedViz.setVizProperties({
                 plotArea: {
                     dataLabel: {
@@ -232,9 +262,13 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	    var bOverall = id.indexOf('overallSegment')!= -1;
 	    var bMyDonation = id.indexOf('mySegment')!= -1;
 	    var bTeam = id.indexOf('byTeamSegment')!= -1;
+	    var byPeople = id.indexOf('byPeopleSegment') != -1;
+
 
 	    this.oDonationTable.setVisible(bOverall);
 	    this.byId("myDonationBox").setVisible( bMyDonation);	
+	    this.byId('personDonationBox').setVisible(byPeople);
+
 	    this.oTeamDonationTable.setVisible(bTeam);
 	},
 	
@@ -295,8 +329,6 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	onSendEmailClosePressed: function( evt ) {
 	    this.oSendEmailDialog.close();
 	},
-	
-
 
 	onDonatePressed: function( evt ) {
 	    if (!this.oDonationDialog) {
@@ -478,6 +510,15 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	    for (var i=0; i < this.mSta.Registration.length; i++) {
 	    	var  item = this.mSta.Registration[i];
 	    	ret.push( item.Status + "," + item.Count);
+	    }
+
+	    //then by date
+		ret.push("");
+	    ret.push("Donations by Date");
+	    ret.push("User,Amount"); 
+	    for ( i=0; i < this.mSta.DonationByDate.length; i++) {
+	    	item = this.mSta.DonationByDate[i];
+			ret.push( item['Date'] + "," + item.Amount);
 	    }
 
 	    //then the giving
