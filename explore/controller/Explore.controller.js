@@ -30,6 +30,8 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		Util.setTableColumnsFilterSortProperty(this.oReceivedTable);
 		Util.setTableColumnsFilterSortProperty(this.oGivingTable);
 		Util.setTableColumnsFilterSortProperty(this.oTeamDonationTable);
+		Util.setTableColumnsFilterSortProperty(this.oDonnorTable);
+		Util.setTableColumnsFilterSortProperty(this.oRunnerTable);
 
 		this.oVizBox = this.byId("vizBox");
 		this.oRegViz = this.byId("registrationViz");
