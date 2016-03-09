@@ -461,7 +461,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	    return "";
 	},
 
-	_exportTeamDonationTable() {
+	_exportTeamDonationTable: function( evt ) {
 		// "TeamDonation\":[{\"TeamId\":1,\"Amount\":4100},{\"TeamId\":0,\"Amount\":2600}],\"Donation\":{ \"Total\":\"6700\",\"Count\":\"17\"}}"}}
  		var ret = ["Team ID, Team Name, Members, Amount(RMB)"]; 
 
