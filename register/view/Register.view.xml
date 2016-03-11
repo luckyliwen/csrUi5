@@ -104,7 +104,7 @@
 									<Label text="Club" id="ClubLabel" required="false" />
 									<mylib:SelectExt name="Club" selectedKey="{/Club}" id="Club" />
 
-								<core:Title text="Attachments (Move mouse to label to see detail instruction)" /> 
+								<core:Title text="Attachments (Move mouse to title to see detail instruction)" /> 
 								    <Label text="ID(身份证) or Passport" required="true" tooltip="For Chinese: 身份证, 正反面一起 For foreigner: passport: the page with photo"/>
                 					<mylib:FileUploaderExt  id="fileUploaderId" width="400px"  selectFile="onAttachmentSelectChanged"
                     					useMultipart="false"  sendXHR="true" fileName="{/FileNameId}" 
@@ -118,13 +118,13 @@
                     					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
 
 									<Label text="Photo" required="true" 
-										tooltip="Photo of headshot, used for create poster.  2M > size >300K "/>
+										tooltip="Headshot photo, will be used to create poster.  2M > size >300K "/>
                 					<mylib:FileUploaderExt  id="fileUploaderPhoto" width="400px" selectFile="onAttachmentSelectChanged"
                     					useMultipart="false"  sendXHR="true" fileName="{/FileNamePhoto}" 
                     					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
 
                     				<Label text="Form" required="true" 
-                    					tooltip="Fill necessary information carefully and rember to sign it"/>
+                    					tooltip="Download form, fill necessary information carefully and remember to sign it"/>
                 					<mylib:FileUploaderExt  id="fileUploaderForm" width="400px" selectFile="onAttachmentSelectChanged"
                     					useMultipart="false"  sendXHR="true" fileName="{/FileNameForm}"
                     					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>

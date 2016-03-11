@@ -9,7 +9,7 @@
         <content>
             <form:SimpleForm>
                 <Label
-                    text="Donatories">
+                    text="Recipients">
                 </Label>
                 <Text
                     id="donatoryTxt">
