@@ -105,25 +105,25 @@
 									<mylib:SelectExt name="Club" selectedKey="{/Club}" id="Club" />
 
 								<core:Title text="Attachments (Move mouse to title to see detail instruction)" /> 
-								    <Label text="ID(身份证) or Passport" required="true" tooltip="For Chinese: 身份证, 正反面一起 For foreigner: passport: the page with photo"/>
+								    <Label text="ID(身份证) or Passport(2M > size >100K)" required="true" tooltip="For Chinese: 身份证, 正反面一起 For foreigner: passport: the page with photo"/>
                 					<mylib:FileUploaderExt  id="fileUploaderId" width="400px"  selectFile="onAttachmentSelectChanged"
                     					useMultipart="false"  sendXHR="true" fileName="{/FileNameId}" 
                     					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
 
-                    				<Label text="Foreign Residence Permit" required="true" id="labelUploaderResidence" 
+                    				<Label text="Foreign Residence Permit(2M > size >100K)" required="true" id="labelUploaderResidence" 
                     					tooltip="The foreigner residence permit in China is not your visa but your residence permit that gives you the right to live in China. Upon arrival in China, you have 30 days to obtain your residence permit"/>
 
                 					<mylib:FileUploaderExt  id="fileUploaderResidence" width="400px"  selectFile="onAttachmentSelectChanged"
                     					useMultipart="false"  sendXHR="true" fileName="{/FileNameResidence}" 
                     					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
 
-									<Label text="Photo" required="true" 
-										tooltip="Headshot photo, will be used to create poster.  2M > size >300K "/>
+									<Label text="Photo (2M > size >100K)" required="true" 
+										tooltip="Headshot photo, will be used to create poster."/>
                 					<mylib:FileUploaderExt  id="fileUploaderPhoto" width="400px" selectFile="onAttachmentSelectChanged"
                     					useMultipart="false"  sendXHR="true" fileName="{/FileNamePhoto}" 
                     					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
 
-                    				<Label text="Form" required="true" 
+                    				<Label text="Form (Download from below button)" required="true" 
                     					tooltip="Download form, fill necessary information carefully and remember to sign it"/>
                 					<mylib:FileUploaderExt  id="fileUploaderForm" width="400px" selectFile="onAttachmentSelectChanged"
                     					useMultipart="false"  sendXHR="true" fileName="{/FileNameForm}"
@@ -143,7 +143,7 @@
 	                        press="onDownloadFormPressed">
 	                    </Button>
 	                    <Button
-	                        text="Team Managment"  id="mngTeamBtn"  enabled = 'false'
+	                        text="Team"  id="mngTeamBtn"  enabled = 'false'
 	                        icon="sap-icon://collaborate"
 	                        press="onManageTeamPressed">
 	                    </Button>

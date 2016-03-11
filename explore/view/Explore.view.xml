@@ -4,7 +4,7 @@
     xmlns:core="sap.ui.core" class="sapUiSizeCompact">
 <App>
 <pages>
-    <Page   title="2016 SAP Great Wall Marathon"
+    <Page   title="Run for LOVE – the Great Wall Marathon 2016 (Powered by CSR)"
         titleLevel="H2">
         <content>
             <IconTabBar expandable="false"  id="iconTabBar"  select="onTconTabBarSelectChanged"
