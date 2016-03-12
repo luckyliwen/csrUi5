@@ -426,8 +426,22 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	    var source = this.byId('otherAmountInput');
 	    var val = source.getValue().trim();
 
+	    var regexp = /^[1-9]\d*$/;
+	    var flag = regexp.test(val);
+	    if (flag) {
+	    	if (val==0)
+	    		flag = false;
+	    }
+
+	     if (flag) {
+	    	source.setValueState("None");
+	    } else {
+	    	source.setValueState("Error");
+	    	source.setValueStateText("Must be a valid positive number");
+	    }
+
 	    //??later need check whether is number
-	    this.byId("donationOkBtn").setEnabled( !!val );
+	    this.byId("donationOkBtn").setEnabled( flag );
 	},
 	
 	

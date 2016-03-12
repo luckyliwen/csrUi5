@@ -6,7 +6,7 @@
     <SplitApp>
         <masterPages>
             <Page
-                title="Approve Marathon">
+                title="Approve Registration">
                 <content>
                    <!--  <SearchField
                         id="searchEvent"

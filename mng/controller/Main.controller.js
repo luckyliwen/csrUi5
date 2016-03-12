@@ -22,6 +22,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 		this.oForm = this.byId('detailForm');		this.oPanel = this.byId('attachmentPanel');
 		this.currentUserId = "";
 		this.currentBindingpath = "";
+		this.hasFreeSeat = false;
 
 		this.byId("deleteBtn").setEnabled(false);
 		this.byId("approveBtn").setEnabled(false);
@@ -35,6 +36,8 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
     	//oListItemTemplate
     	this.createListTemplate();
     	this.bindList();
+
+		this.getRegistrationInfo();
 
     	this.oDataModel.attachRequestCompleted(this.onODataRequestCompleted, this);
 	},
@@ -73,6 +76,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 			}*/
 	    });
 
+		this.onListSelectionChanged();
 	    jQuery.sap.delayedCall(0, this, this.attachDataReceivedEvent);
 	},
 
@@ -111,7 +115,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	    this.oListItemTemplate = item;
 	},
 
-	onListSelectionChanged: function( oEvent ) {
+	onListSelectionChanged: function(  ) {
 	    var selItem = this.oList.getSelectedItem();
 	    if (!selItem) {
 	    	this.oPage.unbindElement();
@@ -180,12 +184,34 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 		});
 	},
 	
+	getRegistrationInfo: function( evt ) {
+		var that = this;
+	    function onRegistrationSuccess(oData) {
+	    	var content = oData.GetRegistrationInfo;
+			var data  = JSON.parse(content);
+			var title="Total approved {0} : normal: {1} , vip: {2}, free candidates: {3}";
+			title = title.sapFormat(data.vip + data.normal, data.normal, data.vip, data.free);
+			that.hasFreeSeat = (data.free >0);
+			that.byId("detailPage").setTitle(title);
+		}
+
+		function onRegistrationError(error) {
+			Util.showError("Failed to get registration information." , error);
+		}
+
+		this.oDataModel.callFunction("/GetRegistrationInfo", {
+			method: "GET",
+			success: onRegistrationSuccess,
+			error: onRegistrationError
+		});
+	},
 
 	onDeletePressed: function( oEvent ) {
 		var that = this;
 	    function onDeleteSuccess( evt ) {
 	        that.getView().setBusy(false);
 	        Util.showToast("Delete registration successful!");
+
 	        that.bindList();
 	    }
 	    
@@ -230,7 +256,9 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	},
 
 	onApproveRejectPressed: function( oEvent, reason) {
-		var mData = {};
+		var mData = {
+			UpdateFlag: Enum.UpdateFlag.Approve
+		};
 		var that = this;
 
 		if (reason) {
@@ -251,7 +279,13 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	        that.getView().setBusy(false);
 	        var action = bApprove ? "Approve" : "Reject";
 	        Util.showToast(action + " successful!");
+	        
 	        //move to next item
+	        if (bApprove) {
+	        	that.getRegistrationInfo();
+	        }
+
+	        that.bindList();
 	    }
 	    
 	    function onApproveRejectError(error) {
@@ -268,10 +302,13 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	    this.getView().setBusy(true);
 	},	
 
-	fmtApproveEnableStatus: function( status ) {
-
+	fmtApproveEnableStatus: function( status, vip ) {
 	    if (status == Enum.Status.Submitted) {
-	     	return true;
+	    	if (vip)
+	    		return true;
+	    	else {
+	    		return this.hasFreeSeat;
+	    	}
 	    } else {
 	     	return false;
 	    }
@@ -481,6 +518,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	        // that.getView().setBusy(false);
 	    	that.oSettingDialog.close();
 	        Util.showToast("Update project setting successful!");
+	        that.getRegistrationInfo();
 	    }
 	    
 	    function onUpdateProjectError(error) {

@@ -19,6 +19,7 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 
 		this.oFooterBar = this.byId('footerBar');
 
+		this.bAdmin = false;
 		this.mRegister = {};
 		this.getMyResistration();
 
@@ -40,8 +41,12 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 		//myTeamId,  myTeamName
 	},
 	
-	fmtPageTitle: function( status ) {
-	    return "My Registration : status [ " + status + " ]";
+	fmtPageTitle: function( status , reason) {
+		if (status == "Rejected") {
+	    	return "My Registration : status [ " + status + " ], reason: " + reason;
+		} else {
+			return "My Registration : status [ " + status + " ]";
+		}
 	},
 	
 
@@ -67,22 +72,25 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 
 		function onGetMyTeamSuccess(oData) {
 			that.oTeamMngDialog.setBusy(false);
+
 			if (oData.results.length >0) {
 				that.byId("teamNameInput").setValue( oData.results[0].Name);
+				that.byId("createTeamBtn").setVisible(false);
 				that.byId("changeTeamBtn").setVisible(true);
 
 				that.myTeamId = oData.results[0].TeamId;
 			} else {
+				that.byId("teamNameInput").setValue("");
 				that.byId("createTeamBtn").setVisible(true);
+				that.byId("changeTeamBtn").setVisible(false);
 			}
 		}
 
 		function onGetMyTeamError(error) {
+			that.myTeamId = "";
 			that.oTeamMngDialog.setBusy(false);
 			Util.showError("Failed to get my create team.", error);
 		}
-
-
 
 		// var url = "/Teams?$filter=OwnerId eq '" + that.mRegister.UserId + "'";
 	    this.oDataModel.read("/Teams", {
@@ -121,7 +129,6 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 
 				that.myTeamName = that.byId("teamNameInput").getValue();
 				that.byId("changeTeamBtn").setVisible(true);
-				that.byId("changeTeamBtn").setEnabled(false);
 
 				that.byId("createTeamBtn").setVisible(false);
 
@@ -221,25 +228,68 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	    this.oTeamMngDialog.setBusy(true);
 	},
 	
-	getSelectedRowTeamId : function() {
+	getSelectedRowTeamInfo: function(  ) {
 	    var row = this.oTeamTable.getSelectedIndex();
 	    if (row == -1)
-	    	return -1;
+	    	return null;
 
 		var context = this.oTeamTable.getContextByIndex(row);
-		return context.getProperty("TeamId");
+		return context.getProperty();
+	},
+	
+	getSelectedRowTeamId : function() {
+		var prop = this.getSelectedRowTeamInfo();
+		return prop.TeamId;
 	},
 
 	
-	onTeamTableRowSelectChanged: function( evt ) {
-	    var selTeamId = this.getSelectedRowTeamId();
+	onTeamTableRowSelectChanged: function(  ) {
+		var prop = this.getSelectedRowTeamInfo();
+		if (!prop) {
+			this.byId("requestJoinBtn").setEnabled(false);
+			this.byId("deleteTeamBtn").setEnabled( false  );
+			return;
+		}
+
+	    var selTeamId = prop.TeamId;
 	    var flag = false;
 	    if (selTeamId != -1) {
 	    	flag = selTeamId != this.mRegister.TeamId;
 	    }
-
+		
 	    this.byId("requestJoinBtn").setEnabled( flag  );
+
+	    var bDel = false;
+	    if (this.bAdmin) {
+	    	bDel = this.isTeamEmptyOrOnlySelf();
+	    } else {
+	    	if ( this.mRegister.UserId == prop.OwnerId) {
+	    		bDel = this.isTeamEmptyOrOnlySelf();
+	    	}
+	    }
+
+	    this.byId("deleteTeamBtn").setEnabled( bDel  );
 	},
+
+
+	isTeamEmptyOrOnlySelf: function(   ) {
+	    //MemberList: I068108:li,wen;
+	    var prop = this.getSelectedRowTeamInfo();
+	    var aMember = prop.MemberList.split(";");
+	    if (aMember.length > 2) {
+	    	return false;
+	    } else if (aMember.length <=1) {
+	    	return true;
+	    }
+
+	    var str = aMember[0];
+	    var aId = str.split(":");
+	    if (aId[0] == this.mRegister.UserId) {
+	    	return true;
+	    } 
+	    return false;
+	},
+	
 	
 
 	onNationalityChanged: function( evt ) {
@@ -254,6 +304,8 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 		var bChinese = this.mRegister.Nationality == 'Chinese';
 		this.byId("labelUploaderResidence").setVisible( !bChinese );
 		this.byId("fileUploaderResidence").setVisible( !bChinese );
+		//when it refresh, the file name will lose, so need manually refesh.  Need check why can't do using the onAfterRending
+		this.showAttachmentFileName();
 	},
 	  
 
@@ -317,6 +369,10 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 				that.getUploadedAttachmentInfo();
 			} else {
 				that.onGetInitialDataFinished();
+			}
+
+			if (that.mRegister.UpdateFlag == "admin") {
+				that.bAdmin = true;
 			}
 		}
 
@@ -414,6 +470,13 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	    					break;
 	    				}
 	    			}
+	    		}
+	    	}
+	    	//if choose others, then need specify value
+	    	if (status) {
+	    		if (this.mRegister.Nationality == 'Others') {
+					var otherValue = this.byId("OtherNationality").getValue().trim();
+					status = !!otherValue;
 	    		}
 	    	}
 
@@ -514,6 +577,15 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	    this.getView().setBusy(true);
 	},
 
+	showAttachmentFileName: function( evt ) {
+	    for (var key in Enum.AttachmentType) {
+	     	var oUploader = this.oUploader[key];
+	     	if (oUploader.getVisible()) {
+	     		oUploader.showFileName();
+	     	}
+	    }
+	},
+	
 	//if save it at same time, then >HTTP Status 500 - Attempting to execute an operation on a closed EntityManager,
 	//so change to only when previos finished then do next 
 	uploadAttachments: function( btn, action) {
@@ -578,13 +650,18 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	},
 
 	onActionError: function( error, oldAction) {
-	    Util.showError(oldAction + " failed." + error);
+	    Util.showError(oldAction + " failed.", error);
 	},
 	
 	
 	getNewStatus: function( action ) {
 	    if (action == 'Save') {
-	    	return 'Drafted';
+	    	//depend on current status 
+	    	if (this.mRegister.Status == "Submitted") {
+				return "Submitted";
+	    	} else {
+	    		return 'Drafted';
+	    	}
 	    } else if (action == "Submit"){
 	    	return "Submitted"; 
 	    } else if (action == "Cancel") {
@@ -592,6 +669,72 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	    }
 	},
 	
+
+	onTeamDeletePressed: function(  ) {
+		var prop = this.getSelectedRowTeamInfo();
+		var memberList = prop.MemberList;
+
+		var that = this;
+	    function onDeleteSuccess( evt ) {
+	        that.oTeamTable.setBusy(false);
+	        Util.showToast("Delete team successful!");
+
+	        that.oTeamTable.bindRows("/Teams");
+	        that.onTeamTableRowSelectChanged();
+
+	        //then need update the TeamId for that register
+	        that.resetTeamIdForRegister(memberList);
+
+	        //also need update the top part buttons when delete himself team 
+	        if (that.myTeamId == prop.TeamId) {
+				that.loadMyTeamInformation();	        	
+	        }
+	    }
+	    
+	    function onDeleteError(error) {
+			that.oTeamTable.setBusy(false);
+			Util.showError("Delete team failed.", error);
+	    }
+
+	    var path = "/Teams(" + prop.TeamId + "L)";
+	    this.oDataModel.remove(path, {
+	    	success: onDeleteSuccess, 
+	    	error:   onDeleteError,
+	    });
+
+	    this.oTeamTable.setBusy(true);
+	},
+	
+	resetTeamIdForRegister: function( memberList ) {
+		//if only one member, then like: I068108:li,wen;
+		var aId = memberList.split(":");
+		if (aId.length ==0) {
+			return;
+		}
+
+		var that = this;
+	    function onExitTeamSuccess( evt ) {
+	    	that.mRegister.TeamId = "0";
+	        Util.showToast("User " + id + " now dont't have any team!");
+	    }
+	    
+	    function onDExitTeamError(error) {
+			Util.showError("User " + id + " leave team failed", error);
+	    }
+
+		var id = aId[0];
+		var path = "/Registrations('" + id + "')";
+		var mData = {
+			UpdateFlag: Enum.UpdateFlag.RequestJoin,
+			TeamId: "0"
+		};
+
+		this.oDataModel.update(path, mData, {
+			success: onExitTeamSuccess,
+			error: onDExitTeamError
+		});
+	},
+
 });
 	
 	

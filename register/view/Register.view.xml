@@ -8,7 +8,7 @@
 	xmlns="sap.m">
 	<App>
 		<pages>
-			<Page title='{path: "/Status", formatter: ".fmtPageTitle"}' id="registerPage">
+			<Page title='{parts:[ {path: "/Status"},{path:"/RejectReason"}], formatter: ".fmtPageTitle"}' id="registerPage">
 				<content>
 					<l:VerticalLayout
 						class="sapUiContentPadding"
@@ -65,13 +65,13 @@
 									<mylib:SelectExt name="Title" selectedKey="{/Title}" id="Title" />
 
 									<Label text="Age" id="AgeLabel" required="true" />
-									<Input value="{/Age}" id="Age"  change="onInputChanged"/>
+									<Input value="{/Age}" type="Number" id="Age"  change="onInputChanged"/>
 									
 									<Label text="Email Address" id="EmailLabel" required="true" />
-									<Input value="{/Email}" id="Email"  change="onInputChanged"/>
+									<Input value="{/Email}" type="Email" id="Email"  change="onInputChanged"/>
 								
 									<Label text="Phone"  required="true" />
-									<Input value="{/Phone}" id="Phone"  change="onInputChanged" />
+									<Input value="{/Phone}" type="Tel" id="Phone"  change="onInputChanged" />
 									
 								<core:Title text="Detail" />
 									<Label text="Distance" id="DistanceLabel" required="true" />
@@ -117,7 +117,7 @@
                     					useMultipart="false"  sendXHR="true" fileName="{/FileNameResidence}" 
                     					uploadComplete="onUploadFileFinished"  uploadAborted="onUploadFileFailed"/>
 
-									<Label text="Photo (2M > size >100K)" required="true" 
+									<Label text="Headshot Photo (2M > size >100K)" required="true" 
 										tooltip="Headshot photo, will be used to create poster."/>
                 					<mylib:FileUploaderExt  id="fileUploaderPhoto" width="400px" selectFile="onAttachmentSelectChanged"
                     					useMultipart="false"  sendXHR="true" fileName="{/FileNamePhoto}" 
