@@ -57,25 +57,30 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 		if (!key) 
 			key = "";
 
-		var bVip = (key.indexOf("vipSegment") != -1);
-
-		if (bVip) {
-			aFilter.push( new sap.ui.model.Filter("Vip", 'EQ', true));
+		if (key.indexOf("otherSegment") != -1) {
+			aFilter = [new sap.ui.model.Filter("Status", 'NE', 'Submitted')];
+			this.oList.bindItems({
+		    	path: "/Registrations",
+		    	filters: aFilter,
+		    	template: this.oListItemTemplate
+			} );
 		} else {
-			aFilter.push( new sap.ui.model.Filter("Vip", 'EQ', false));
+
+			var bVip = (key.indexOf("vipSegment") != -1);
+
+			if (bVip) {
+				aFilter.push( new sap.ui.model.Filter("Vip", 'EQ', true));
+			} else {
+				aFilter.push( new sap.ui.model.Filter("Vip", 'EQ', false));
+			}
+
+			this.oList.bindItems({
+		    	path: "/Registrations",
+		    	filters: aFilter,
+		    	template: this.oListItemTemplate
+			} );
 		}
-
-	    this.oList.bindItems({
-	    	path: "/Registrations",
-	    	sorter: new sap.ui.model.Sorter("SubmittedTime"),
-	    	filters: aFilter,
-	    	template: this.oListItemTemplate,
-
-	    	/*events: {
-				dataReceived: [this.onListDataReceived, this]
-			}*/
-	    });
-
+	    
 		this.onListSelectionChanged();
 	    jQuery.sap.delayedCall(0, this, this.attachDataReceivedEvent);
 	},
@@ -205,6 +210,54 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 			error: onRegistrationError
 		});
 	},
+
+	onSavePressed: function( evt ) {
+		var context = this.oPage.getBindingContext();
+		var path = context.getPath();
+		var pendingChange = context.getModel().getPendingChanges();
+		var pending  = pendingChange[ path.substr(1)]; 
+		
+		if (!pending) {
+			Util.info("You didn't change any value, so no need save!");
+			return;
+		}
+
+		var mData = {};
+		for (var key in pending) {
+			if (key == "__metadata")
+				continue;
+
+			mData[key] = pending[key];
+			if (key == "Age")
+				mData.Age = parseInt(mData.Age);
+		}
+		
+		var that = this;
+	    function onSaveSuccess( evt ) {
+	        that.getView().setBusy(false);
+	        Util.showToast("Save registration successful!");
+
+	        //so now can delete the changes 
+	        delete pendingChange[path.substr(1)];
+	    }
+	    
+	    function onSaveError(error) {
+			that.getView().setBusy(false);
+			Util.showError("Save registration failed." ,error);
+	    }
+
+	    this.oDataModel.update(path, mData, {
+	    	success: onSaveSuccess, 
+	    	error:   onSaveError,
+	    });
+
+	    this.getView().setBusy(true);
+	},
+
+	onFreshPressed: function( evt ) {
+	    this.bindList();
+	},
+	
 
 	onDeletePressed: function( oEvent ) {
 		var that = this;

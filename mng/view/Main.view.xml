@@ -19,14 +19,16 @@
                         select="onNormalVipSegmentSelected">
                         <buttons>
                             <Button
-                                text="Normal"
-                                id="normalSegment"
-                                press="onNormalOrVipSegmentSelected">
+                                text="Normal" tooltip="Normal Submitted"
+                                id="normalSegment">
                             </Button>
                             <Button
-                                text="VIP"
-                                id="vipSegment"
-                                press="onNormalOrVipSegmentSelected">
+                                text="VIP"  tooltip="VIP Submitted"
+                                id="vipSegment">
+                            </Button>
+                            <Button
+                                text="Others"  tooltip="Approved &amp; Rejected"
+                                id="otherSegment">
                             </Button>
                         </buttons>
                     </SegmentedButton>
@@ -41,9 +43,10 @@
                  <footer> <Bar>
                 <contentRight>
                     <Button
-                        text="Sort"
+                        text="Refresh"
                         type="Emphasized"
-                        icon="sap-icon://sort"
+                        press="onFreshPressed"
+                        icon="sap-icon://fresh"
                         id="sortBtn"
                         />
                     </contentRight>

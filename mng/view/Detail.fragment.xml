@@ -36,7 +36,7 @@
 					<mylib:SelectExt name="Title" selectedKey="{Title}" id="Title" />
 
 					<Label text="Age" id="AgeLabel" required="true" />
-					<Input value="{Age}" id="Age"  change="onInputChanged"/>
+					<Input value="{Age}" id="Age" type="Number" change="onInputChanged"/>
 					
 					<Label text="Email Address" id="EmailLabel" required="true" />
 					<Input value="{Email}" id="Email"  change="onInputChanged"/>
@@ -47,11 +47,12 @@
 			<core:Title text="Detail" />
 				
 				<Label text="Distance" id="DistanceLabel" required="true" />
-				<mylib:SelectExt name="Distance"  id="Distance" 
+				<mylib:SelectExt   id="Distance" enableAdditionalText="true"  name="Distance"
 					selectedKey="{Distance}" />
 
 				<Label text="TshirtSize" id="TshirtSizeLabel" required="true" />
-				<mylib:SelectExt name="TshirtSize"  selectedKey="{TshirtSize}" id="TshirtSize" />
+				<mylib:SelectExt   selectedKey="{TshirtSize}" enableAdditionalText="true" name="TshirtSize" id="TshirtSize" 
+					/>
 
 				 <Label text="Previous best time" />
 				 <VBox width="100%">
@@ -146,6 +147,17 @@
                         enabled="{= !!${Status} }"
                         >
                     </Button>
+
+                    <Button
+                        text="Save"
+                        type="Emphasized"
+                        icon="sap-icon://save"
+                        id="saveBtn"
+                        press="onSavePressed"
+                        enabled="{= !!${Status} }"
+                        >
+                    </Button>
+
                     <Button
                         text="Approve"
                         type="Accept"

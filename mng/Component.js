@@ -20,10 +20,13 @@ sap.ui.define([
 			var pos = currPath.lastIndexOf("/");
 			jQuery.sap.registerModulePath('csr.lib', currPath.substr(0, pos)+"/lib" );
 
+			this.getModel().setDefaultCountMode("Inline");
+			this.getModel().setDefaultBindingMode("TwoWay");
+
 			// call the base component's init function
 			UIComponent.prototype.init.apply(this, arguments);
 
-			this.getModel().setDefaultCountMode("Inline");
+
 		}
 	});
 
