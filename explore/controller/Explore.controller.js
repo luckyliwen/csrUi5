@@ -225,7 +225,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
                 },
                 title: {
                     visible: true,
-                    text: 'Top 10 Most Valuable Runners'
+                    text: 'Top 10 Runners'
                 }
         });
 
