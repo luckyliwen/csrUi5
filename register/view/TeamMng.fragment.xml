@@ -27,7 +27,7 @@
                         press="onCreateOrChangeTeamPressed">
                     </Button>
                     <html:div style="width:2rem" />
-                     <Button  id="changeTeamBtn"  visible="false"  enabled="false"
+                     <Button  id="changeTeamBtn"  visible="false"  
                         text="Change Name"   
                         press="onCreateOrChangeTeamPressed">
                     </Button>

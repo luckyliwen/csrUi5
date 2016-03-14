@@ -79,6 +79,7 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 				that.byId("changeTeamBtn").setVisible(true);
 
 				that.myTeamId = oData.results[0].TeamId;
+				that.myTeamName= oData.results[0].Name;
 			} else {
 				that.byId("teamNameInput").setValue("");
 				that.byId("createTeamBtn").setVisible(true);
@@ -109,27 +110,31 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 			this.byId("createTeamBtn").setEnabled(true);
 	    }
 
-	    if (this.myTeamName != val) {
+	    /*if (this.myTeamName != val) {
 	    	this.byId("changeTeamBtn").setEnabled(true);
-	    } 
+	    } */
 	},
 	
 
 	onCreateOrChangeTeamPressed: function( evt ) {
 	    var bCreate = true;
 	    if (evt.getSource().getId().indexOf("changeTeamBtn")!= -1) {
+			var newVal = this.byId("teamNameInput").getValue().trim();
+	    	if (this.myTeamName == newVal) {
+	    		Util.info("You didn't change the team name! Please first change the name then press the button!");
+	    		return ;
+	    	}
 	    	bCreate = false;
 	    }
 
 	    var that = this;
 	    function onCreateOrChangeSuccess(oData) {
 			that.oTeamMngDialog.setBusy(false);
+			that.myTeamName = that.byId("teamNameInput").getValue();
 			if (bCreate) {
 				Util.showToast("Create team successful!");
 
-				that.myTeamName = that.byId("teamNameInput").getValue();
 				that.byId("changeTeamBtn").setVisible(true);
-
 				that.byId("createTeamBtn").setVisible(false);
 
 				that.myTeamId = oData.TeamId;
@@ -141,7 +146,7 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 				}
 			} else {
 				Util.showToast("Change team name successful!");
-				that.byId("changeTeamBtn").setEnabled(false);
+				// that.byId("changeTeamBtn").setEnabled(false);
 			}
 	    }
 
@@ -165,7 +170,7 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	    	this.oDataModel.create("/Teams", mData, mParam);
 	    } else {
 	    	var url = "/Teams("  + this.myTeamId + "L)";
-	    	mData = { Name: this.byId("teamNameInput").getValue() };
+	    	mData = { Name: this.byId("teamNameInput").getValue().trim() };
 	    	this.oDataModel.update(url,  mData, mParam);
 	    }
 	    this.oTeamMngDialog.setBusy(true);
@@ -706,6 +711,9 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	},
 	
 	resetTeamIdForRegister: function( memberList ) {
+		if (memberList =="")
+			return;
+
 		//if only one member, then like: I068108:li,wen;
 		var aId = memberList.split(":");
 		if (aId.length ==0) {

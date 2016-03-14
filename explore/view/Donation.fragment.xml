@@ -74,7 +74,7 @@
             <table:Column>
                 <table:label>
                     <Label
-                        text="Donatory">
+                        text="Recipient">
                     </Label>
                 </table:label>
                 <table:template>
@@ -85,7 +85,7 @@
              <table:Column>
                 <table:label>
                     <Label
-                        text="Donatory Name">
+                        text="Recipient Name">
                     </Label>
                 </table:label>
                 <table:template>
@@ -222,7 +222,7 @@
            <table:Column>
                 <table:label>
                     <Label
-                        text="Donatory">
+                        text="Recipient">
                     </Label>
                 </table:label>
                 <table:template>
@@ -234,7 +234,7 @@
             <table:Column>
                 <table:label>
                     <Label
-                        text="Donatory Name">
+                        text="Recipient Name">
                     </Label>
                 </table:label>
                 <table:template>
