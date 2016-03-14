@@ -251,7 +251,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
                 },
                 title: {
                     visible: true,
-                    text: 'To 10 Donors'
+                    text: 'Top 10 Donors'
                 }
         });
 
