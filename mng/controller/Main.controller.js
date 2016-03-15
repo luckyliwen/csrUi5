@@ -198,6 +198,9 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 			title = title.sapFormat(data.vip + data.normal, data.normal, data.vip, data.free);
 			that.hasFreeSeat = (data.free >0);
 			that.byId("detailPage").setTitle(title);
+
+			//now get the hasFreeSet, so need update the button status
+			that.updateAllButtonStatus();
 		}
 
 		function onRegistrationError(error) {
@@ -212,6 +215,11 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	},
 
 	onSavePressed: function( evt ) {
+		if (!this.currentBindingpath) {
+			console.error("Logic error, should not happend!");
+			return;
+		}
+
 		var context = this.oPage.getBindingContext();
 		var path = context.getPath();
 		var pendingChange = context.getModel().getPendingChanges();
@@ -255,12 +263,19 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	},
 
 	onFreshPressed: function( evt ) {
+		this.updateAllButtonStatus();
+		this.currentBindingpath = "";
 	    this.bindList();
 	    this.getRegistrationInfo();
 	},
 	
 
 	onDeletePressed: function( oEvent ) {
+		if (!this.currentBindingpath) {
+			console.error("Logic error, should not happend!");
+			return;
+		}
+
 		var that = this;
 	    function onDeleteSuccess( evt ) {
 	        that.getView().setBusy(false);
@@ -310,6 +325,11 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	},
 
 	onApproveRejectPressed: function( oEvent, reason) {
+		if (!this.currentBindingpath) {
+			console.error("Logic error, should not happend!");
+			return;
+		}
+
 		var mData = {
 			UpdateFlag: Enum.UpdateFlag.Approve
 		};
@@ -356,6 +376,26 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	    this.getView().setBusy(true);
 	},	
 
+	//as we get the Registration information later, so need manually adjust the status 
+	updateAllButtonStatus: function() {
+		var bSel = true, bApproveReject = false;
+
+	    var selItem = this.oList.getSelectedItem();
+	    if (!selItem) {
+	    	bSel = false;
+	    } else {
+	    	var binding = selItem.getBindingContext();
+	    	var prop = binding.getProperty();
+	    	bApproveReject = this.fmtApproveEnableStatus(prop.Status, prop.Vip);
+	    }
+
+	    this.byId("deleteBtn").setEnabled(bSel);
+	    this.byId("saveBtn").setEnabled(bSel);
+	    this.byId("approveBtn").setEnabled(bSel && bApproveReject);
+	    this.byId("rejectBtn").setEnabled(bSel && bApproveReject);
+	},
+	 
+
 	fmtApproveEnableStatus: function( status, vip ) {
 	    if (status == Enum.Status.Submitted) {
 	    	if (vip)
@@ -367,6 +407,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	     	return false;
 	    }
 	},
+
 
 	fmtAttachmentLink: function( fileName, type ) {
 	    return "Picture for " + type;
