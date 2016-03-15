@@ -382,7 +382,12 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	    } else {
 	    	var binding = selItem.getBindingContext();
 	    	var prop = binding.getProperty();
-	    	bApproveReject = this.fmtApproveEnableStatus(prop.Status, prop.Vip);
+	    	//when just delete it,then prop has been delete, so means no item has select, 
+	    	if (!prop) {
+	    		bSel = false;
+	    	} else {
+	    		bApproveReject = this.fmtApproveEnableStatus(prop.Status, prop.Vip);
+	    	}
 	    }
 
 	    this.byId("deleteBtn").setEnabled(bSel);
