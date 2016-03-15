@@ -29,8 +29,8 @@
   									<Title titleStyle="H5" text="120  First Registering, Frist get!" /> -->
 
 									<Label text="Official event site (external)" textAlign="left" />
-									<Link text="http://www.great-wall-marathon.com.cn/"  target="_blank" 
-									 href="http://www.great-wall-marathon.com.cn/"/>
+									<Link text="http://great-wall-marathon.com/"  target="_blank" 
+									 href="http://great-wall-marathon.com/"/>
 
 									<Label text="The latest updates on Jam page" textAlign="left" />
 									<Link text="You Don’t Want to Miss This"  target="_blank" 
