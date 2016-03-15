@@ -48,7 +48,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	
 
 	onODataRequestCompleted: function( oData ) {
-	    console.error(oData);
+	    // console.error(oData);
 	},
 	
 	bindList: function( ) {
@@ -540,7 +540,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
     },
 
 	onSettingInputChanged: function( evt ) {
-	    var ids=["MaxRegisterNum",   "FreeVipNum",  "VipIds"];
+	    var ids=["MaxRegisterNum",   "FreeVipNum"];
 	    var flag = true;
 	    for (var i=0; i < ids.length; i++) {
 	    	var id = ids[i];

@@ -621,7 +621,6 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 			var oUploader = aInfo[1];
 
 			var url = Util.getAttachmentUploaderUrl( this.mRegister.UserId, key, oUploader.getFileName());
-			console.error('!! now for ', url);
 
  			oUploader.setUploadUrl(url);
 
