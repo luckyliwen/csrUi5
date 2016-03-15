@@ -14,7 +14,7 @@
 		
 		"dataSources": {
 			"mainService": {
-				"uri": "https://csrodatap1941885273trial.hanatrial.ondemand.com/csrodata/ODataSrv",
+				"uri": "/odata/CsrODataSrv",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0"
