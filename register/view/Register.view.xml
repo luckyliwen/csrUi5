@@ -20,7 +20,7 @@
 								<form:content>
 									<!-- <core:Title /> -->
 									<Label text="Closing date for registration" />
-  									<Title titleStyle="H5" text="12:00PM, April 1st" />
+  									<Title titleStyle="H5" text="18:00, March 31st" />
 									<Label text="Event date &amp; venue" />
   									<Title titleStyle="H5" text="May 21st (Sat), Huang-ya-guan Great Wall, Tianjin" />
 
