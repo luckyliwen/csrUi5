@@ -256,6 +256,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 
 	onFreshPressed: function( evt ) {
 	    this.bindList();
+	    this.getRegistrationInfo();
 	},
 	
 
@@ -265,7 +266,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	        that.getView().setBusy(false);
 	        Util.showToast("Delete registration successful!");
 
-	        that.bindList();
+	        that.onFreshPressed();
 	    }
 	    
 	    function onDeleteError(error) {
@@ -338,7 +339,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	        	that.getRegistrationInfo();
 	        }
 
-	        that.bindList();
+	        this.onFreshPressed();
 	    }
 	    
 	    function onApproveRejectError(error) {
