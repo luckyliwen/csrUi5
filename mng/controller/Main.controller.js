@@ -355,11 +355,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	        Util.showToast(action + " successful!");
 	        
 	        //move to next item
-	        if (bApprove) {
-	        	that.getRegistrationInfo();
-	        }
-
-	        this.onFreshPressed();
+	        that.onFreshPressed();
 	    }
 	    
 	    function onApproveRejectError(error) {
