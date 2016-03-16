@@ -102,7 +102,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column visible="true">
+            <table:Column visible="true" width="175px">
                 <table:label>
                     <Label
                         text="Email">
@@ -115,7 +115,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column>
+            <table:Column width="125px">
                 <table:label>
                     <Label
                         text="Phone">
