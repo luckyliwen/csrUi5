@@ -16,7 +16,7 @@
                     </core:Icon> -->
                     <Title
                         level="H2"
-                        text="Tips: Choose row(s) and press 'Donate' button to donate">
+                        text='Tips: Choose "Approved" Runner(s) and press "Donate" button to donate'>
                     </Title>
                     <ToolbarSpacer />
                     <Button  id="donateBtn"  enabled="false"

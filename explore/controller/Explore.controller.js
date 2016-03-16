@@ -284,8 +284,18 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	
 
 	onRegistrationTableRowSelectChanged: function( evt ) {
+	    //only the Approved can donate
 	    var selIdx = this.oRegTable.getSelectedIndices();
-	    this.byId("donateBtn").setEnabled( selIdx.length > 0 );
+	    var bHasOneApproved = false;
+		for (var i=0; i < selIdx.length; i++) {
+			var context = this.oRegTable.getContextByIndex( selIdx[i]);
+			var status = context.getProperty("Status");
+			if (status == "Approved") {
+				bHasOneApproved = true;
+				break;
+			}
+		}
+	    this.byId("donateBtn").setEnabled( bHasOneApproved );
 	    this.byId("emailBtn").setEnabled( selIdx.length > 0 );
 	},
 
@@ -341,11 +351,15 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		var list = "";
 		for (var i=0; i < selIdx.length; i++) {
 			var context = this.oRegTable.getContextByIndex( selIdx[i]);
-			var userId = context.getProperty("UserId");
-			if (list.length >0) {
-				list += ',';
+
+			var status = context.getProperty("Status");
+			if (status == "Approved") {
+				var userId = context.getProperty("UserId");
+				if (list.length >0) {
+					list += ',';
+				}
+				list += userId;
 			}
-			list += userId;
 		}
 		this.byId('donatoryTxt').setText(list);
 
