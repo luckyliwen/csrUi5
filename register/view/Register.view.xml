@@ -49,11 +49,11 @@
 									
 									<Label text="Surame (拼音:姓)" id="RegLastNameLabel" required="true" 
 										tooltip="Same as Passport or ID card"/>
-									<Input value="{/RegLastName}"   change="onInputChanged"/>
+									<Input value="{/RegLastName}"  id="RegLastName" change="onInputChanged"/>
 
 									<Label text="First Name (拼音:名)" id="RegFirstNameLabel" required="true" 
 										tooltip="Same as Passport or ID card"/>
-									<Input value="{/RegFirstName}"  change="onInputChanged"/>
+									<Input value="{/RegFirstName}" id="RegFirstName" change="onInputChanged"/>
 
 									<Label text="Nationality" id="NationalityLabel" required="true" />
 									<mylib:SelectExt name="Nationality"  selectedKey="{/Nationality}" id="Nationality" 

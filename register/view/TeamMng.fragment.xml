@@ -5,7 +5,7 @@
 
     <Dialog
         title="Team Management Dialog"   id="teamMngDialog"
-        contentWidth="800px">
+        contentWidth="1400px">
         <content>
         <Panel>
             <Title
@@ -57,7 +57,7 @@
                             </Text>
                         </table:template>
                     </table:Column>
-                    <table:Column  width="30%"
+                    <table:Column  width="20%"
                         filterProperty="Name">
                         <table:label>
                             <Label
@@ -83,7 +83,7 @@
                             </Text>
                         </table:template>
                     </table:Column>
-                    <table:Column  width="50%">
+                    <table:Column  width="60%">
                         <table:label>
                             <Label
                                 text="Members">

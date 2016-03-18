@@ -44,6 +44,9 @@
 					<Label text="Phone"  required="true" />
 					<Input value="{Phone}" id="Phone"  change="onInputChanged" />
 
+					<Label text="**Status" id="StatusLabel" required="false" />
+				    <mylib:SelectExt name="Status" selectedKey="{Status}" id="Status" />
+
 			<core:Title text="Detail" />
 				
 				<Label text="Distance" id="DistanceLabel" required="true" />
@@ -75,6 +78,7 @@
 
 				<Label text="Club" id="ClubLabel" required="false" />
 				<mylib:SelectExt name="Club" selectedKey="{Club}" id="Club" />
+
 			</form:content>
 		</form:SimpleForm>
 <Panel headerText="Attachments" id="attachmentPanel">

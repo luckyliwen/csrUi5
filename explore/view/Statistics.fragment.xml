@@ -18,7 +18,7 @@
 
     <!-- <Panel headerText="Registration Information"> -->
          <viz:VizFrame id="registrationViz" uiConfig="{applicationSet:'fiori'}"
-                         height='100px' width="100%" vizType='column'>
+                         height='280px' width="100%" vizType='column'>
                 <viz:dataset>
                     <viz.data:FlattenedDataset data="{/Registration}">
                         <viz.data:dimensions>

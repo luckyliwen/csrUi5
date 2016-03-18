@@ -490,6 +490,17 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 	},
 	
 	onInputChanged: function( oEvent ) {
+		var source = oEvent.getSource();
+		var id = source.getId();
+		if ( id.indexOf("RegLastName") != -1 || id.indexOf("RegFirstName") != -1) {
+			var value = source.getValue();
+			for (var i=0; i < value.length; i++) {
+				var code = value.charCodeAt(i);
+				if (code >= 128) {
+					Util.showError("Please input Ping Yin or English Name!");
+				}
+			}
+		}
 	    this.checkButtonStatus();
 	},
 
@@ -511,8 +522,16 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 
 		var btn = oEvent.getSource();
 		var action = btn.data("Action");
+
+		if (action == "Cancel") {
+			var bConfirm = confirm("Are you sure to cancel the Registraion? After cancel, then can't submit again!");
+			if (!bConfirm)
+				return;
+		}
+
 		var oldStatus = this.mRegister.Status;
 	    var newStatus  = this.getNewStatus( action );
+
 	    var bCreate = true;
 	    if (oldStatus != "New") {
 	    	bCreate = false;

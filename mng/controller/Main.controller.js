@@ -3,8 +3,9 @@ sap.ui.define([
 	"csr/lib/BaseController",
 	"csr/lib/Enum",
 	"csr/lib/Config",
-	"csr/lib/Util"
-], function(BaseController, Enum, Config, Util) {
+	"csr/lib/Util",
+	"sap/ui/model/type/DateTime"
+], function(BaseController, Enum, Config, Util,DateTime) {
 	"use strict";
 
 var ControllerController = BaseController.extend("csr.mng.controller.Main", {
@@ -19,7 +20,8 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 
 		this.oList = this.byId('registrationList');
 		this.oPage = this.byId("detailPage");
-		this.oForm = this.byId('detailForm');		this.oPanel = this.byId('attachmentPanel');
+		this.oForm = this.byId('detailForm');		
+		this.oPanel = this.byId('attachmentPanel');
 		this.currentUserId = "";
 		this.currentBindingpath = "";
 		this.hasFreeSeat = false;
@@ -77,6 +79,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 			this.oList.bindItems({
 		    	path: "/Registrations",
 		    	filters: aFilter,
+		    	sorter: [new sap.ui.model.Sorter("SubmittedTime")],
 		    	template: this.oListItemTemplate
 			} );
 		}
@@ -114,8 +117,14 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 	    		}),
 	    	
 	    	attributes: new sap.m.ObjectAttribute({
-					text: "{Team}"
-				})
+						text: {
+							path: "SubmittedTime",
+							type:  new sap.ui.model.type.DateTime({
+								style: "medium",
+								pattern: "MM/dd HH:mm:ss"
+							})
+						}
+				   })
 	    });
 	    this.oListItemTemplate = item;
 	},
