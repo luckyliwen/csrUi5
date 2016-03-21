@@ -206,7 +206,21 @@
                     </Text>
                 </table:template>
             </table:Column>
+            <table:Column visible="false">
+                <table:label>
+                    <Label
+                        text="Submit Time">
+                    </Label>
+                </table:label>
+                <table:template>
+                    <Text
+                        text="{path: 'SubmittedTime',type:'sap.ui.model.type.DateTime', formatOptions : { style:'medium',pattern: 'MM/dd HH:mm:ss'}}">
+                    </Text>
+                </table:template>
+            </table:Column>
+
         </table:columns>
     </table:Table>
 
 </core:FragmentDefinition>
+
