@@ -197,7 +197,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
                 },
                 title: {
                     visible: true,
-                    text: 'Donation summary by Date'
+                    text: 'Accumulated donations by Date'
                 }
         });
 
