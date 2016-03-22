@@ -523,7 +523,7 @@ var ControllerController = BaseController.extend("csr.mng.controller.Main", {
 
 		this.oDataModel.read("/Registrations", {
 	    	filters: [new sap.ui.model.Filter("Status", 'EQ', "Approved")],
-	    	sorter: new sap.ui.model.Sorter("SubmittedToDownloadDialogime"),
+	    	sorter: new sap.ui.model.Sorter("SubmittedTime"),
 	    	success: onGetApprovedRunnerSuccess, 
 	    	error:   onGetApprovedRunnerError
 	    });
