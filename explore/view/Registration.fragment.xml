@@ -89,7 +89,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column>
+            <table:Column id="TeamCol">
                 <table:label>
                     <Label
                         text="Team">
@@ -142,7 +142,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column>
+            <table:Column id="StatusCol">
                 <table:label>
                     <Label
                         text="Status">

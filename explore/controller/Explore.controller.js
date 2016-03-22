@@ -60,7 +60,16 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 			that.initDonationPart();
 			that.initVizPart();
 
-			that.oRegTable.bindRows("/Registrations");
+			var statusCol = that.byId("StatusCol");
+			// statusCol.setFilterValue("Approved");
+			// statusCol.setFiltered(true);
+			statusCol.setSorted(true)
+
+			that.oRegTable.bindRows({
+				path: "/Registrations",
+				sorter: [new sap.ui.model.Sorter("Status")],
+				// filters: [new sap.ui.model.Filter("Status", 'EQ', 'Approved')]
+			});
 		}
 		
 	    function onGetTeamInfoError(error) {
