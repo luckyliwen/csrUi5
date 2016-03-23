@@ -16,6 +16,8 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		this.aTeam = [];
 		this.oDataModel = this.getModel();
 		this.oDataModel.setUseBatch(false);
+		//default is 100 then dowload have issue
+		this.oDataModel.setSizeLimit(1000);
 
 		this.oRegTable = this.byId('registrationTable');
 		this.oDonationTable = this.byId("donationTable");
