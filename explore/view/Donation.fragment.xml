@@ -44,6 +44,14 @@
                         icon="sap-icon://excel-attachment"
                         press="onTableExportPressed">
                     </Button>
+
+                    <Button
+                        visible="false"
+                        id="deleteDonationTable"
+                        icon="sap-icon://delete"
+                        press="onDonationDeletePressed">
+                    </Button>
+
                 </content>
             </Toolbar>
         </table:toolbar>

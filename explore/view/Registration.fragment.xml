@@ -76,7 +76,7 @@
                 </table:template>
             </table:Column>
             
-            <table:Column>
+            <table:Column id="NationalityCol">
                 <table:label>
                     <Label
                         text="Nationality">
@@ -102,7 +102,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column visible="true" width="175px">
+            <table:Column visible="true" width="175px" id="EmailCol">
                 <table:label>
                     <Label
                         text="Email">
@@ -115,7 +115,7 @@
                 </table:template>
             </table:Column>
 
-            <table:Column width="125px">
+            <table:Column width="125px" id="PhoneCol">
                 <table:label>
                     <Label
                         text="Phone">

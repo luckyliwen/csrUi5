@@ -63,7 +63,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 			var statusCol = that.byId("StatusCol");
 			// statusCol.setFilterValue("Approved");
 			// statusCol.setFiltered(true);
-			statusCol.setSorted(true)
+			statusCol.setSorted(true);
 
 			that.oRegTable.bindRows({
 				path: "/Registrations",
@@ -82,11 +82,27 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		});
 	},
 	
+	adjustViewByRole: function( bAdmin ) {
+	    if (bAdmin) {
+	    	this.byId("deleteDonationTable").setVisible(true);
+	    } else {
+	    	var cols = ["EmailCol", "PhoneCol", "NationalityCol"];
+	    	for (var i=0; i < cols.length; i++) {
+	    		var col = this.byId(cols[i]);
+	    		this.oRegTable.removeColumn( col );
+	    	}
+	    }
 
+	    //for some reg table need remove for legal reason
+	    //
+	},
+	
 	initDonationPart: function(  ) {
 		var that = this;
 
 		function onGetUserInfoSuccess( oData) {
+			that.adjustViewByRole(oData.Admin);
+
 			if (!that.userId) {
 		    	that.userId = oData.UserId;
 			} else {
@@ -321,6 +337,27 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		}
 		window.open(url, "_parent");
 	},
+
+	onDonationDeletePressed: function( evt ) {
+		var selIdx = this.oDonationTable.getSelectedIndices();
+		if (selIdx.length ==0) {
+			Util.info("Please first select some row then delete.");
+			return;
+		}
+
+		var bConfirm = confirm("Are you sure to delete the donation ?");
+   		if (!bConfirm)
+   			return;
+	    
+		for (var i=0; i < selIdx.length; i++) {
+			var context = this.oDonationTable.getContextByIndex( selIdx[i]);
+			var id = context.getProperty("DonationId");
+
+			var url = "/Donations(" + id + "L)";
+			this.oDataModel.remove(url);
+		}
+	},
+	
 
 	onSendEmailPressed : function( evt ) {
 		if (!this.oSendEmailDialog) {
