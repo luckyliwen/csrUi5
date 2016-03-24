@@ -34,6 +34,7 @@
                     </SegmentedButton>
 
                     <List
+                        growing="true"  growingThreshold="150"
                         id="registrationList"
                         noDataText="no registration"
                         mode="SingleSelectMaster"
