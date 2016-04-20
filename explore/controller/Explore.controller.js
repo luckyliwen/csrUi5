@@ -103,7 +103,9 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		var that = this;
 
 		function onGetUserInfoSuccess( oData) {
-			that.adjustViewByRole(oData.Admin);
+			if (oData) {
+				that.adjustViewByRole(oData.Admin);
+			}
 
 			if (!that.userId) {
 		    	that.userId = oData.UserId;
@@ -399,14 +401,16 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		var list = "";
 		for (var i=0; i < selIdx.length; i++) {
 			var context = this.oRegTable.getContextByIndex( selIdx[i]);
-
-			var status = context.getProperty("Status");
-			if (status == "Approved") {
-				var userId = context.getProperty("UserId");
-				if (list.length >0) {
-					list += ',';
+			//??need check why sometimes the context is null
+			if (context != null) {
+				var status = context.getProperty("Status");
+				if (status == "Approved") {
+					var userId = context.getProperty("UserId");
+					if (list.length >0) {
+						list += ',';
+					}
+					list += userId;
 				}
-				list += userId;
 			}
 		}
 		this.byId('donatoryTxt').setText(list);
@@ -418,11 +422,13 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
  	    this.oDonationDialog.close();
  	},
  	
-	onDonationOkPressed	: function( evt ) {
-	    this.oDonationDialog.close();
-
+	onDonationOkPressed	: function( oEvent ) {
 	    var that = this;
+	    var btn = oEvent.getSource();
+
 	    function onDonateSuccess() {
+	    	that.oDonationDialog.close();
+	    	btn.setEnabled(true);
 	        that.getView().setBusy(false);
 	        Util.showToast("Donate successful! Information will be auto refresh...");
 
@@ -431,6 +437,8 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	    }
 	    
 	    function onDonateError(error) {
+	    	that.oDonationDialog.close();
+	    	btn.setEnabled(true);
 			that.getView().setBusy(false);
 			Util.showError("Donate failed." , error);
 	    }
@@ -449,9 +457,18 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 			}
 		}
 		// amount = parseInt(amount);
+		// need add the confirm dialog in order to prevent user pressed it wrongly 
+		var iAmount = parseInt(amount);
 
 	    var comment = this.byId("commentInput").getValue().trim();
-	    
+	    var toRunner = this.byId('donatoryTxt').getText();
+	    var aToRunner = toRunner.split(',');
+	    iAmount = iAmount * aToRunner.length;
+
+	    var bConfirm = confirm("Are you sure to donate " + iAmount + " RMB ?");
+   		if (!bConfirm)
+   			return;
+
 	    // var url = "/DoDonation?To='" + this.byId('donatoryTxt').getText() +
 	    // 	"'&Amount='" + amount + "'&Comment='" + comment+"'";
 	    var mParam = {
@@ -466,6 +483,8 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	    });
 
 	    this.getView().setBusy(true);
+	    //disable it in order not press it again
+	    btn.setEnabled(false);
 	},
 	
 	onDelayedRadioChangeFunc: function( evt ) {
