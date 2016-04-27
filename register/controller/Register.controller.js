@@ -21,7 +21,25 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 
 		this.bAdmin = false;
 		this.mRegister = {};
-		this.getMyResistration();
+
+		// this.getTheResistrationWithId("I028161");
+		var sProxy = jQuery.sap.getUriParameters().get("mode");
+		var bProxy = (sProxy == "proxy");
+		if (bProxy) {
+			var proxyId;
+			while(true) {
+				proxyId = prompt("Please input the user id which you want to register for");
+				if (! proxyId || proxyId.length <5) {
+					alert("You don't not input correct id, please try again!");
+				} else {
+					break;
+				}
+			}
+			this.getTheResistrationWithId(proxyId.trim());
+		} else {
+			this.getMyResistration();	
+		}
+		
 
 		this.oSubmitBtn = null;
 		this.oCancelBtn = null;
@@ -387,6 +405,113 @@ var ControllerController = BaseController.extend("csr.register.controller.Regist
 		}
 
 	    this.oDataModel.callFunction("/GetMyRegistration", {
+			method: "GET",
+			success: onGetMyRegistrationSuccess,
+			error: onGetMyRegistrationError
+		});
+
+	    this.getView().setBusy(true);
+	},
+
+
+	getTheResistrationWithId: function(userId) {
+		var that = this;
+		function onGetMyRegistrationSuccess(oData) {
+			that.byId("mngTeamBtn").setEnabled(true);
+			that.getView().setBusy(false);
+
+			delete oData.__metadata;
+			delete oData.AttachmentDetails;
+			delete oData.DonationDetails;
+
+	    	//also set the defaultValue for the selection for the null part 
+	    	var config = Config.getConfigure();
+	    	for (var key in config) {
+	    		var value = config[key];
+	    		if ( key in oData && oData[key] == null && value.defaultValue) {
+	    			var selection = that.byId(key);
+	    			if (selection instanceof csr.lib.SelectExt) {
+	    				oData[key] = value.defaultValue;
+	    				// selection.setSelectedKey();
+	    			}
+	    		}
+	    	}
+
+	    	//set model two way
+			that.mRegister = oData; 
+			//by default the initial file name is ""
+			that.mRegister.FileNameId = "";
+			that.mRegister.FileNamePhoto = "";
+			that.mRegister.FileNameForm = "";
+			that.mRegister.FileNameResidence = "";
+			//db only store nationality, but UI need two variables
+			if ( Config.isOtherNationality(  that.mRegister.Nationality) ) {
+				that.mRegister.OtherNationality = that.mRegister.Nationality;
+				that.mRegister.Nationality = "Others";
+			}  else {
+				that.mRegister.OtherNationality = "";
+			}
+
+			if (that.mRegister.Age === 0) {
+	    		delete that.mRegister.Age;
+	    	}
+
+			//get the attachments informaiton 
+			if (that.mRegister.Status != "New") {
+				that.getUploadedAttachmentInfo();
+			} else {
+				//for the first time, need get the first name and last name.
+				that.onGetInitialDataFinished();
+			}
+
+			if (that.mRegister.UpdateFlag == "admin") {
+				that.bAdmin = true;
+			}
+		}
+
+		function onGetMyRegistrationError(error) {
+			that.getView().setBusy(false);
+			//if that person not register before, then it will fail
+			if ( ! (error.responseText && 
+				error.responseText.indexOf("Requested entity could not be found") != -1) ) {
+				Util.showError("Failed to get my registration.", error);
+				return;
+			} 
+
+			that.byId("mngTeamBtn").setEnabled(true);
+			that.getView().setBusy(false);
+
+	    	//also set the defaultValue for the selection for the null part 
+
+	    	//set model two way
+			that.mRegister = {UserId: userId, Status: 'New', Nationality: 'German'};
+			//then get the first name and last name
+			while (true) {
+				var firstLastName = prompt("Please input first and last name, separate by , ");
+				firstLastName = firstLastName.trim();
+				var pos = firstLastName.indexOf(",");
+				if (pos != -1) {
+					that.mRegister.FirstName = firstLastName.substring(0, pos);
+					that.mRegister.LastName = firstLastName.substr(pos+1);
+					break;
+				} else {
+					alert("Input correct,pleae try again!");
+				}
+			}
+
+			//by default the initial file name is ""
+			that.mRegister.FileNameId = "";
+			that.mRegister.FileNamePhoto = "";
+			that.mRegister.FileNameForm = "";
+			that.mRegister.FileNameResidence = "";
+
+			//for the first time, need get the first name and last name.
+			that.onGetInitialDataFinished();
+		}
+
+		//Registrations('I041661')
+		var url = "/Registrations('" + userId + "')";
+	    this.oDataModel.read(url, {
 			method: "GET",
 			success: onGetMyRegistrationSuccess,
 			error: onGetMyRegistrationError
