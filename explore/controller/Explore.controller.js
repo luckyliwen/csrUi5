@@ -52,6 +52,9 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 
 		this.mSta = {};
 		this.loadTeamInfor();
+
+		this.MAX_SAP_DONATION_AMOUNT = 87630;
+		this.currentSAPDonation = -1; //
 	},
 
 	loadTeamInfor: function( ) {
@@ -87,6 +90,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	adjustViewByRole: function( bAdmin ) {
 	    if (bAdmin) {
 	    	this.byId("deleteDonationTable").setVisible(true);
+	    	this.byId("updateSAPDonation").setVisible(true);
 	    } else {
 	    	var cols = ["EmailCol", "PhoneCol", "NationalityCol"];
 	    	for (var i=0; i < cols.length; i++) {
@@ -142,6 +146,32 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 
 	},
 
+	updateDonationTitle: function( evt ) {
+	    var info = "Total amount: " + this.mSta.Donation.Total + " (rmb), ";
+	    if (this.currentSAPDonation != -1) {
+	    	info += "donated by SAP: " + this.currentSAPDonation + " (rmb), ";
+	    }
+
+		var count = this.mSta.Donation.Count - 1;
+		info += "donatation count: " + count + " (times)";
+
+		this.byId("doationTableTitle").setText(info);
+	},
+	
+	getSAPDonationInfor: function( evt ) {
+		if (  this.currentSAPDonation == -1) {
+			var that = this;
+		    this.oDataModel.read("/Donations(1720L)", {
+		    	success: function( data ) {
+		    	    that.currentSAPDonation = data.Amount;
+		    	    that.updateDonationTitle();
+		    	},
+		    	
+		    });
+		}
+	},
+	
+
 	initVizPart: function( evt ) {
 		this.setVizPartProp();	    
 
@@ -153,15 +183,43 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 			
 			var content = oData.GetStatistics;
 			that.mSta  = JSON.parse(content);
+
+			//as now it will include the special donation, so for the /Receive and /Giving 
+			//we need exclude it if there   "SAP (SAP)"   "China Charity (CHARITY)"
+			for (var i=0; i < that.mSta.Giving.length; i++) {
+				var  user = that.mSta.Giving[i].User;
+				if ( user == "SAP (SAP)") {
+					that.currentSAPDonation = that.mSta.Giving[i].Amount;
+					break;
+				}
+			}
+			if (i == that.mSta.Giving.length) {
+				//not found the special giving
+				i = that.mSta.Giving.length -1;
+			}
+			that.mSta.Giving.splice(i,1);
+
+			//then for the Received
+			for (i=0; i < that.mSta.Received.length; i++) {
+				var  user = that.mSta.Received[i].User;
+				if ( user == "China Charity (CHARITY)") {
+					that.currentSAPDonation = that.mSta.Received[i].Amount;
+					break;
+				}
+			}
+			if (i == that.mSta.Received.length) {
+				//not found the special giving
+				i = that.mSta.Received.length -1;
+			}
+			that.mSta.Received.splice(i,1);
+
 			that.oModel.setData( that.mSta);
 			// this.oRegViz.setModel(dataModel);
 			// 
-			var info = "Total amount: " + that.mSta.Donation.Total + " (rmb), donatation count: " 
-				+ that.mSta.Donation.Count + " (times)"; 
-			// that.oDonationTable.setTitle(info);
-			that.byId("doationTableTitle").setText(info);
+			that.updateDonationTitle();
+
+			that.getSAPDonationInfor();
 		}
-        
 
         function onGetStatisticsError(error) {
 			that.byId("vizBox").setBusy(false);
@@ -169,7 +227,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		}
 
 	    this.oDataModel.callFunction("/GetStatistics", {
-	    	urlParameters: { Top: "10", '$format': "json"},
+	    	urlParameters: { Top: "11", '$format': "json"},
 			method: "GET",
 			success: onGetStatisticsSuccess,
 			error: onGetStatisticsError
@@ -341,6 +399,64 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		}
 		window.open(url, "_parent");
 	},
+
+	onUpdateSAPDonationPressed: function( evt ) {
+		if (this.currentSAPDonation >= this.MAX_SAP_DONATION_AMOUNT) {
+			alert("The SAP donation already reach the maximun amount " + this.MAX_SAP_DONATION_AMOUNT);
+			return;
+		}
+
+	    //first get the amount;
+	    //then update Donations(1720L) till reach the threshold 87630
+	    var that = this;
+	    function onGetLatestDonationSuccess(oData) {
+	    	var amount = 0;
+	    	for (var i=0; i < oData.results.length; i++) {
+	    		var entry = oData.results[i];
+		    	if (entry.DonatorId != "SAP") {
+		    		amount += parseInt(entry.Amount);
+		    		if (amount >= that.MAX_SAP_DONATION_AMOUNT) {
+		    			amount = that.MAX_SAP_DONATION_AMOUNT;
+		    			break;
+		    		}
+		    	}
+	    	}
+	    	that.currentSAPDonation = amount;
+			that.updateDonationTitle();
+
+	    	var mData = {
+	    		Amount: "" + amount
+	    	};
+
+	    	//then do the update
+	    	that.oDataModel.update("/Donations(1720L)", mData, {
+	    		success: function( evt ) {
+	    			that.getView().setBusy(false);
+	    		    Util.showToast('Successful update the SAP Donation, now amount is ' + amount);
+	    		},
+	    		
+	    		error: function(error) {
+					that.getView().setBusy(false);
+					Util.showError("Update SAP Donation failed", error);
+	    		}
+	    	});
+	    }
+
+		function onGetLatestDonationError(error) {
+			that.getView().setBusy(false);
+			Util.showError("Failed to get last two week donation information", error);
+		}
+
+	    var url = "/Donations?$filter=ModifiedTime gt datetime'2016-05-09T00:00:00'";
+	    var aFilter = [new sap.ui.model.Filter("ModifiedTime", 'GT', "2016-05-09T00:00:00")];
+	    this.oDataModel.read("/Donations", {
+	    	filters: aFilter,
+			success: onGetLatestDonationSuccess,
+			error: onGetLatestDonationError
+		});
+		that.getView().setBusy(true);
+	},
+	
 
 	onDonationDeletePressed: function( evt ) {
 		var selIdx = this.oDonationTable.getSelectedIndices();

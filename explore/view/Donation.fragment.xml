@@ -51,7 +51,13 @@
                         icon="sap-icon://delete"
                         press="onDonationDeletePressed">
                     </Button>
-
+                    <Button
+                        visible="false"
+                        id="updateSAPDonation"
+                        icon="sap-icon://activate"
+                        text="Update SAP Donation Amount"
+                        press="onUpdateSAPDonationPressed">
+                    </Button>
                 </content>
             </Toolbar>
         </table:toolbar>
