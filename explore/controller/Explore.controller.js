@@ -202,7 +202,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 			//also remove the dilian club's donations
 			for (i=0; i < that.mSta.Giving.length; i++) {
 				var  user = that.mSta.Giving[i].User;
-				if ( user == "SAPDALIAN (SAP Dalian Club)") {
+				if ( user == "SAP Dalian Club (SAPDALIAN)") {
 					that.currentSAPDonation = that.mSta.Giving[i].Amount;
 					break;
 				}
