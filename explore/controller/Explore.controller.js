@@ -198,6 +198,21 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 				i = that.mSta.Giving.length -1;
 			}
 			that.mSta.Giving.splice(i,1);
+			
+			//also remove the dilian club's donations
+			for (i=0; i < that.mSta.Giving.length; i++) {
+				var  user = that.mSta.Giving[i].User;
+				if ( user == "SAPDALIAN (SAP Dalian Club)") {
+					that.currentSAPDonation = that.mSta.Giving[i].Amount;
+					break;
+				}
+			}
+			if (i == that.mSta.Giving.length) {
+				//not found the special giving
+				i = that.mSta.Giving.length -1;
+			}
+			that.mSta.Giving.splice(i,1);
+			
 
 			//then for the Received
 			for (i=0; i < that.mSta.Received.length; i++) {
@@ -212,7 +227,9 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 				i = that.mSta.Received.length -1;
 			}
 			that.mSta.Received.splice(i,1);
-
+			//for the received, need remove two, so also remove the last one 
+			that.mSta.Received.pop();
+			
 			that.oModel.setData( that.mSta);
 			// this.oRegViz.setModel(dataModel);
 			// 
@@ -227,7 +244,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		}
 
 	    this.oDataModel.callFunction("/GetStatistics", {
-	    	urlParameters: { Top: "11", '$format': "json"},
+	    	urlParameters: { Top: "12", '$format': "json"},
 			method: "GET",
 			success: onGetStatisticsSuccess,
 			error: onGetStatisticsError
