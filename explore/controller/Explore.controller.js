@@ -184,41 +184,43 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 			var content = oData.GetStatistics;
 			that.mSta  = JSON.parse(content);
 
-			//as now it will include the special donation, so for the /Receive and /Giving 
-			//we need exclude it if there   "SAP (SAP)"   "China Charity (CHARITY)"
+		//as now it will include the special donation, so for the /Receive and /Giving 
+		//we need exclude it if there   "SAP (SAP)"   "SAP Dalian Club (SAPDALIAN)"  "SAP Run Club (SAPRUNCLUB)
+			var aDel=[];
 			for (var i=0; i < that.mSta.Giving.length; i++) {
 				var  user = that.mSta.Giving[i].User;
-				if ( user == "SAP (SAP)") {
-					that.currentSAPDonation = that.mSta.Giving[i].Amount;
-					break;
-				}
-			}
-			if (i == that.mSta.Giving.length) {
-				//not found the special giving
-				i = that.mSta.Giving.length -1;
-			}
-			that.mSta.Giving.splice(i,1);
+				//first 3 later is SAP then means it is special 
+				if (user.substr(0,3) == "SAP") {
+					aDel.push(i);
 			
-			//also remove the dilian club's donations
-			for (i=0; i < that.mSta.Giving.length; i++) {
-				var  user = that.mSta.Giving[i].User;
-				if ( user == "SAP Dalian Club (SAPDALIAN)") {
-					that.currentSAPDonation = that.mSta.Giving[i].Amount;
-					break;
-				}
-			}
-			if (i == that.mSta.Giving.length) {
-				//not found the special giving
-				i = that.mSta.Giving.length -1;
-			}
-			that.mSta.Giving.splice(i,1);
-			
+					if ( user == "SAP (SAP)") {
+						that.currentSAPDonation = that.mSta.Giving[i].Amount;
+					}
 
-			//then for the Received
+					if (aDel.length ==3)
+						break;
+				}
+			}
+
+			//in normal case, the top 3 is the 3 special, but here need check if less than 3 then add from last
+			if ( aDel.length < 3) {
+				var iPos = 13 - (3 - aDel.length);
+				while (true) {
+					aDel.push(iPos);
+					 iPos ++;
+					 if (aDel.length == 3)
+					 	break;
+				}
+			}
+			//then del them, need from big to small
+			that.mSta.Giving.splice( aDel[2], 1);
+			that.mSta.Giving.splice( aDel[1], 1);
+			that.mSta.Giving.splice( aDel[0], 1);
+
+		//##then for the Received
 			for (i=0; i < that.mSta.Received.length; i++) {
 				var  user = that.mSta.Received[i].User;
 				if ( user == "China Charity (CHARITY)") {
-					that.currentSAPDonation = that.mSta.Received[i].Amount;
 					break;
 				}
 			}
@@ -228,6 +230,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 			}
 			that.mSta.Received.splice(i,1);
 			//for the received, need remove two, so also remove the last one 
+			that.mSta.Received.pop();
 			that.mSta.Received.pop();
 			
 			that.oModel.setData( that.mSta);
@@ -244,7 +247,7 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 		}
 
 	    this.oDataModel.callFunction("/GetStatistics", {
-	    	urlParameters: { Top: "12", '$format': "json"},
+	    	urlParameters: { Top: "13", '$format': "json"},
 			method: "GET",
 			success: onGetStatisticsSuccess,
 			error: onGetStatisticsError
@@ -430,7 +433,9 @@ var ControllerController = BaseController.extend("csr.explore.controller.Explore
 	    	var amount = 0;
 	    	for (var i=0; i < oData.results.length; i++) {
 	    		var entry = oData.results[i];
-		    	if (entry.DonatorId != "SAP") {
+		    	if (entry.DonatorId != "SAP"  && entry.DonatorId != "SAPDALIAN" 
+		    			&& entry.DonatorId != "SAPRUNCLUB") 
+		    	{
 		    		amount += parseInt(entry.Amount);
 		    		if (amount >= that.MAX_SAP_DONATION_AMOUNT) {
 		    			amount = that.MAX_SAP_DONATION_AMOUNT;
